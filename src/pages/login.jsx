@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { auth } from "../lib/firebase";
+import { GlobalContext } from "../context/globalContext";
+import { actions } from "../context/actions";
 
 const classes = {
   container:
@@ -28,13 +30,20 @@ const Login = () => {
   const [error, setError] = useState("");
   const isInvalid = password === "" || emailAddress === "";
 
+  const { state, dispatch } = useContext(GlobalContext);
   const router = useRouter();
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(auth, emailAddress, password);
+      const { user } = await signInWithEmailAndPassword(
+        auth,
+        emailAddress,
+        password
+      );
+
+      dispatch({ type: actions.LOGIN, payload: user });
       router.push("/");
     } catch (error) {
       setEmailAddress("");
@@ -42,6 +51,12 @@ const Login = () => {
       setError(error.message);
     }
   };
+
+  useEffect(() => {
+    if (state.user) {
+      router.push("/");
+    }
+  }, [state, router]);
 
   const { container, formLogo, input, submitButton, formFooter } = classes;
 

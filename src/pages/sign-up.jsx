@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -8,7 +8,10 @@ import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
 import Head from "next/head";
 import Link from "next/link";
+
 import { usernameExists } from "../herlpers/firebase";
+import { GlobalContext } from "../context/globalContext";
+import { actions } from "../context/actions";
 
 const classes = {
   container:
@@ -32,8 +35,10 @@ const SignUp = () => {
   const [fullName, setFullName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
+
+  const { state, dispatch } = useContext(GlobalContext);
+
   const isInvalid = password === "" || emailAddress === "";
 
   const handleSignUp = async (event) => {
@@ -43,7 +48,7 @@ const SignUp = () => {
 
     if (!exists) {
       try {
-        const createdUserResult = await createUserWithEmailAndPassword(
+        const createdUser = await createUserWithEmailAndPassword(
           auth,
           emailAddress,
           password
@@ -56,15 +61,18 @@ const SignUp = () => {
         // });
         // firebase user collection (create a document)
         const usersRef = collection(db, "users");
-        await addDoc(usersRef, {
-          id: createdUserResult.user.uid,
+        const newUser = {
+          id: createdUser.user.uid,
           username: username.toLowerCase(),
           fullName,
           emailAddress: emailAddress.toLowerCase(),
           following: ["Wqf8HJNWqWexL66iAbJMPiPesWa2"],
           followers: [],
           dateCreated: Date.now(),
-        });
+        };
+        await addDoc(usersRef, newUser);
+
+        dispatch({ type: actions.LOGIN, payload: newUser });
         router.push("/");
 
         // Error Signing up
@@ -79,6 +87,12 @@ const SignUp = () => {
       setError("That username is already taken, please try another.");
     }
   };
+
+  useEffect(() => {
+    if (state.user) {
+      router.push("/");
+    }
+  }, [state, router]);
 
   const { container, signUpForm, input, submitButton, footer } = classes;
   return (
