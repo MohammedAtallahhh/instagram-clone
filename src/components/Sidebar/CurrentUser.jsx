@@ -24,11 +24,8 @@ const CurrentUser = () => {
       <div className="flex items-center justify-between col-span-1">
         <img
           className="rounded-full w-14 flex mr-3"
-          src={`/images/${username}/profile.jpg`}
+          src={DEFAULT_IMAGE_PATH}
           alt=""
-          onError={(e) => {
-            e.target.src = DEFAULT_IMAGE_PATH;
-          }}
         />
       </div>
       <div className="col-span-3">
