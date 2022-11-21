@@ -47,6 +47,11 @@ const SignUp = () => {
     const exists = await usernameExists(username);
 
     if (!exists) {
+      if (username.includes(" ")) {
+        setError("Username must not contain spaces");
+        return;
+      }
+
       try {
         const createdUser = await createUserWithEmailAndPassword(
           auth,
@@ -54,25 +59,23 @@ const SignUp = () => {
           password
         );
 
-        // authentication
-        // -> emailAddress & password & username (displayName)
-        // await createdUserResult.user.updateProfile({
-        //   displayName: username,
-        // });
-        // firebase user collection (create a document)
         const usersRef = collection(db, "users");
         const newUser = {
-          id: createdUser.user.uid,
+          auth_id: createdUser.user.uid,
           username: username.toLowerCase(),
           fullName,
           emailAddress: emailAddress.toLowerCase(),
-          following: ["Wqf8HJNWqWexL66iAbJMPiPesWa2"],
+          following: [],
           followers: [],
           dateCreated: Date.now(),
         };
-        await addDoc(usersRef, newUser);
 
-        dispatch({ type: actions.LOGIN, payload: newUser });
+        const res = await addDoc(usersRef, newUser);
+
+        await dispatch({
+          type: actions.LOGIN,
+          payload: { ...newUser, id: res.id },
+        });
         router.push("/");
 
         // Error Signing up

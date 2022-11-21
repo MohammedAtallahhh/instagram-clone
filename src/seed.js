@@ -4,7 +4,6 @@ import { db } from "./lib/firebase";
 export async function seedDatabase() {
   const users = [
     {
-      id: "Wqf8HJNWqWexL66iAbJMPiPesWa2",
       username: "Mohammed",
       fullName: "Mohammed Atallah",
       emailAddress: "mohamedatallahh2017@gmail.com",
@@ -13,7 +12,6 @@ export async function seedDatabase() {
       dateCreated: Date.now(),
     },
     {
-      id: "2",
       username: "Eid",
       fullName: "Mohammed Hassan Eid",
       emailAddress: "eid@gmail.com",
@@ -50,7 +48,7 @@ export async function seedDatabase() {
   for (let i = 1; i <= 3; ++i) {
     await addDoc(photosRef, {
       id: i,
-      user_id: "Wqf8HJNWqWexL66iAbJMPiPesWa2",
+      user_id: "emELP6s1XwCzIn13EcoQ",
       src: `/images/oglu/${i}.jpg`,
       caption: "Saint George and the Dragon",
       likes: [],

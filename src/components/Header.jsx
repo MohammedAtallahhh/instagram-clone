@@ -1,42 +1,40 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 import { signOut } from "firebase/auth";
 
+import { auth } from "../lib/firebase";
 import { GlobalContext } from "../context/globalContext";
 import { DEFAULT_IMAGE_PATH } from "../constants";
-import { auth } from "../lib/firebase";
-import { actions } from "../context/actions";
 
 import { AiOutlineHome } from "react-icons/ai";
 import { IoMdExit } from "react-icons/io";
-import useUser from "../hooks/useUser";
 
 const classes = {
   header: "h-16 bg-white border-b border-gray-primary mb-8",
-  contianer: "w-[90%] max-w-[1400px] mx-auto max-w-screen-lg h-full",
+  contianer: "w-[90%] max-w-[1400px] mx-auto h-full",
   logo: "text-gray-700 text-center flex items-center align-items cursor-pointer",
+  actions: "text-gray-700 text-center flex items-center gap-5",
+  loginButton: "bg-blue-medium font-bold text-sm rounded text-white w-20 h-8",
+  signUpButton: "font-bold text-sm rounded text-blue-medium w-20 h-8",
 };
 
 const Header = () => {
-  const {
-    state: { user: loggedUser },
-    dispatch,
-  } = useContext(GlobalContext);
-
-  const user = useUser(loggedUser?.uid);
+  const { state, dispatch } = useContext(GlobalContext);
+  const { user } = state;
 
   const router = useRouter();
 
-  const handleSignOut = () => {
-    signOut(auth);
-    dispatch({ type: actions.LOGOUT });
+  const handleSignOut = async () => {
+    await signOut(auth);
+    await dispatch({ type: actions.LOGOUT });
     router.push("/login");
   };
 
-  const { header, contianer, logo } = classes;
+  const { header, contianer, logo, actions, loginButton, signUpButton } =
+    classes;
   return (
     <header className={header}>
       <div className={contianer}>
@@ -54,8 +52,8 @@ const Header = () => {
             </h1>
           </div>
 
-          <div className="text-gray-700 text-center flex items-center gap-5">
-            {loggedUser ? (
+          <div className={actions}>
+            {user ? (
               <>
                 {/* Home icon */}
                 <Link href="/" aria-label="Dashboard">
@@ -64,14 +62,12 @@ const Header = () => {
 
                 {/* User icon */}
                 <div className="flex items-center cursor-pointer">
-                  <Link href={`/p/${user?.username}`}>
+                  <Link href={`/p/${user?.auth_id}`}>
+                    {" "}
                     <img
                       className="rounded-full h-8 w-8 flex"
-                      src={`/images/${user?.username}.jpg`}
+                      src={DEFAULT_IMAGE_PATH}
                       alt={`${user?.username} profile`}
-                      onError={(e) => {
-                        e.target.src = DEFAULT_IMAGE_PATH;
-                      }}
                     />
                   </Link>
                 </div>
@@ -93,18 +89,12 @@ const Header = () => {
             ) : (
               <>
                 <Link href="/login">
-                  <button
-                    type="button"
-                    className="bg-blue-medium font-bold text-sm rounded text-white w-20 h-8"
-                  >
+                  <button type="button" className={loginButton}>
                     Log In
                   </button>
                 </Link>
                 <Link href="/sign-up">
-                  <button
-                    type="button"
-                    className="font-bold text-sm rounded text-blue-medium w-20 h-8"
-                  >
+                  <button type="button" className={signUpButton}>
                     Sign Up
                   </button>
                 </Link>

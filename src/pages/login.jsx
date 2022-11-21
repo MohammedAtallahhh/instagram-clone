@@ -3,13 +3,15 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
-import Link from "next/link";
 import { auth } from "../lib/firebase";
 import { GlobalContext } from "../context/globalContext";
 import { actions } from "../context/actions";
+import { collection, query, where } from "firebase/firestore";
+import { getUserById } from "../herlpers/firebase";
 
 const classes = {
   container:
@@ -43,7 +45,10 @@ const Login = () => {
         password
       );
 
-      dispatch({ type: actions.LOGIN, payload: user });
+      const userData = await getUserById(user.uid);
+
+      dispatch({ type: actions.LOGIN, payload: userData });
+
       router.push("/");
     } catch (error) {
       setEmailAddress("");
@@ -53,7 +58,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (state.user) {
+    if (state.user && router.pathname !== "/") {
       router.push("/");
     }
   }, [state, router]);

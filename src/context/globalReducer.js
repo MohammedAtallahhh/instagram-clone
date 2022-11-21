@@ -9,9 +9,13 @@ export const globalReducer = (state, action) => {
       };
 
     case actions.LOGOUT:
+      console.log("HERE");
       return {
         ...state,
         user: null,
       };
+
+    default:
+      return state;
   }
 };
