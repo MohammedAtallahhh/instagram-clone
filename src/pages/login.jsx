@@ -10,8 +10,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { GlobalContext } from "../context/globalContext";
 import { actions } from "../context/actions";
-import { collection, query, where } from "firebase/firestore";
-import { getUserById } from "../herlpers/firebase";
+import { getUserByAuthId } from "../herlpers/firebase";
 
 const classes = {
   container:
@@ -45,7 +44,7 @@ const Login = () => {
         password
       );
 
-      const userData = await getUserById(user.uid);
+      const userData = await getUserByAuthId(user.uid);
 
       dispatch({ type: actions.LOGIN, payload: userData });
 

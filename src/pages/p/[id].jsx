@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { getUserById } from "../../herlpers/firebase";
+import { getUserByAuthId } from "../../herlpers/firebase";
 
 import Skeleton from "react-loading-skeleton";
 import { collection, getDocs, query } from "firebase/firestore";
@@ -24,7 +24,7 @@ const UserPage = () => {
       const isValidId = ids.find((existedId) => existedId === id);
 
       if (isValidId) {
-        const userData = await getUserById(id);
+        const userData = await getUserByAuthId(id);
         setUser(userData);
       } else {
         router.push("/404");

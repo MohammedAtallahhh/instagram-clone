@@ -4,24 +4,19 @@ import Link from "next/link";
 import { GlobalContext } from "../../context/globalContext";
 import { followUser } from "../../herlpers/firebase";
 
-const SuggestedUser = ({ profileData }) => {
+const SuggestedUser = ({ data }) => {
   const [followed, setFollowed] = useState(false);
 
   const {
-    data: { username },
-    docId: id,
-  } = profileData;
-
-  const {
     state: { user },
-    dispatch,
   } = useContext(GlobalContext);
 
-  async function handleFollowUser() {
+  const handleFollowUser = async () => {
+    // send the current user id along with the followed user
+    await followUser(user.id, id);
     setFollowed(true);
-    await followUser(user.docId, id);
-  }
-
+  };
+  const { username, id } = data;
   return !followed ? (
     <div className="flex flex-row items-center justify-between py-2">
       <div className="flex items-center justify-between">

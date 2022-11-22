@@ -1,7 +1,13 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  documentId,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context/globalContext";
-import { getSuggestedUsers, getUserById } from "../../herlpers/firebase";
 import { db } from "../../lib/firebase";
 import SuggestedUser from "./SuggestedUser";
 
@@ -16,6 +22,25 @@ const SuggestedUsers = () => {
 
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      const q = query(
+        collection(db, "users"),
+        where(documentId(), "not-in", [...user.following, user.id])
+      );
+
+      const userDocs = await getDocs(q);
+
+      const users = userDocs.docs.map((u) => ({ id: u.id, ...u.data() }));
+
+      setLoading(false);
+      setProfiles(users);
+    };
+
+    fetchUsers();
+  }, []);
+
   return (
     <div>
       <h2 className="font-medium mb-3">Suggested users</h2>
@@ -25,7 +50,7 @@ const SuggestedUsers = () => {
       ) : (
         <ul className="max-w-[250px]">
           {profiles.map((profile) => (
-            <SuggestedUser key={profile.docId} profileData={profile} />
+            <SuggestedUser key={profile.id} data={profile} />
           ))}
         </ul>
       )}
