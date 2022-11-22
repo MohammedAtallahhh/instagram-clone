@@ -9,7 +9,7 @@ import { BsHeart, BsFillHeartFill } from "react-icons/bs";
 import { FaRegCommentDots } from "react-icons/fa";
 import { ImSpinner2 } from "react-icons/im";
 
-const PostActions = ({ id, handleFocus, likesCount, hasLiked }) => {
+const Actions = ({ id, handleFocus, likesCount, hasLiked }) => {
   const {
     state: { user },
   } = useContext(GlobalContext);
@@ -37,8 +37,8 @@ const PostActions = ({ id, handleFocus, likesCount, hasLiked }) => {
   };
 
   return (
-    <>
-      <div className="flex items-center gap-4 p-4">
+    <div className="px-3">
+      <div className="flex items-center gap-4 py-2">
         <button
           onClick={handleToggleLiked}
           onKeyDown={(event) => {
@@ -69,13 +69,13 @@ const PostActions = ({ id, handleFocus, likesCount, hasLiked }) => {
         </button>
       </div>
 
-      <div className="p-4 pt-0">
-        <p className="font-bold">
+      <div className="py-1">
+        <p className="font-medium">
           {likes === 1 ? `${likes} like` : `${likes} likes`}
         </p>
       </div>
-    </>
+    </div>
   );
 };
 
-export default PostActions;
+export default Actions;

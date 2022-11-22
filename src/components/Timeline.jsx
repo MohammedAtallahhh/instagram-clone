@@ -1,13 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import Skeleton from "react-loading-skeleton";
 
 import Post from "./Post";
@@ -34,7 +27,6 @@ const Timeline = () => {
           const res = await getDoc(userRef);
 
           let hasLiked = !!post.data().likes.find((l) => l === user?.id);
-
           return {
             id: post.id,
             ...post.data(),
@@ -51,11 +43,10 @@ const Timeline = () => {
       fetchPosts();
     }
   }, [user]);
-
   return (
     <div className="flex justify-center">
       {following === undefined ? (
-        <Skeleton count={3} width={640} height={500} className="mb-5" />
+        <Skeleton count={3} width={400} height={500} className="mb-5" />
       ) : following.length === 0 ? (
         <p className="flex justify-center font-bold">
           Follow other people to see Photos

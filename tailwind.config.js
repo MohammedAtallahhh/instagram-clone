@@ -26,6 +26,7 @@ module.exports = {
       },
       red: {
         primary: "#ed4956",
+        base: "red",
       },
     },
   },

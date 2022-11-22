@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { DEFAULT_IMAGE_PATH } from "../../constants";
 
-const PostHeader = ({ username, auth_id }) => {
+const Header = ({ username, auth_id }) => {
   return (
     <div className="flex border-b border-gray-primary h-4 p-4 py-8">
       <div className="flex items-center">
@@ -20,4 +20,4 @@ const PostHeader = ({ username, auth_id }) => {
   );
 };
 
-export default PostHeader;
+export default Header;

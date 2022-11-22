@@ -9,7 +9,7 @@ const Sidebar = () => {
   } = useContext(GlobalContext);
 
   return user ? (
-    <div className="w-[220px]">
+    <div>
       <CurrentUser />
       <SuggestedUsers />
     </div>
