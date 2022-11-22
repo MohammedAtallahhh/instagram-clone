@@ -16,7 +16,7 @@ const SuggestedUser = ({ data }) => {
     await followUser(user.id, id);
     setFollowed(true);
   };
-  const { username, id } = data;
+  const { username, id, auth_id } = data;
   return !followed ? (
     <div className="flex flex-row items-center justify-between py-2">
       <div className="flex items-center justify-between">
@@ -25,7 +25,7 @@ const SuggestedUser = ({ data }) => {
           src={`/images/default.png`}
           alt=""
         />
-        <Link href={`/p/${username}`}>
+        <Link href={`/p/${auth_id}`}>
           <p className="font-bold text-sm">{username}</p>
         </Link>
       </div>

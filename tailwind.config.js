@@ -18,10 +18,11 @@ module.exports = {
         faded: "#00000059",
       },
       gray: {
-        light: "#ddd",
-        base: "#616161",
         background: "#fafafa",
+        light: "#ddd",
         primary: "#dbdbdb",
+        base: "#616161",
+        text: "#333",
       },
       red: {
         primary: "#ed4956",

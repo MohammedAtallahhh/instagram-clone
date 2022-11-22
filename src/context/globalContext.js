@@ -23,24 +23,16 @@ export const GlobalProvider = ({ children }) => {
         const userData = await getUserByAuthId(id);
 
         dispatch({ type: actions.LOGIN, payload: userData });
+
+        onSnapshot(doc(db, "users", userData.id), (user) => {
+          const data = user.data();
+
+          dispatch({ type: actions.LOGIN, payload: { ...data, id: user.id } });
+        });
       } else {
         dispatch({ type: actions.LOGOUT });
       }
     });
-  }, []);
-
-  useEffect(() => {
-    if (state.user) {
-      const unsub = onSnapshot(doc(db, "users", state.user.id), (user) => {
-        const data = user.data();
-
-        console.log({ ...data, id: user.id });
-
-        dispatch({ type: actions.LOGIN, payload: { ...data, id: user.id } });
-      });
-
-      return () => unsub();
-    }
   }, []);
 
   return (

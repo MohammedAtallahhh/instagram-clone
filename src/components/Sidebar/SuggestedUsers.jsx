@@ -39,9 +39,11 @@ const SuggestedUsers = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [user]);
 
-  return (
+  console.log({ user });
+
+  return profiles.length ? (
     <div>
       <h2 className="font-medium mb-3">Suggested users</h2>
 
@@ -55,7 +57,7 @@ const SuggestedUsers = () => {
         </ul>
       )}
     </div>
-  );
+  ) : null;
 };
 
 export default SuggestedUsers;

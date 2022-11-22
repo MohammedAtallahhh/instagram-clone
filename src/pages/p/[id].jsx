@@ -1,10 +1,18 @@
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { getUserByAuthId } from "../../herlpers/firebase";
+import { useRouter } from "next/router";
 
-import Skeleton from "react-loading-skeleton";
-import { collection, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
+
+import { Profile } from "../../components";
+
 import { db } from "../../lib/firebase";
+import { getUserByAuthId } from "../../herlpers/firebase";
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
@@ -12,9 +20,8 @@ const UserPage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const { id } = router.query;
     const fetchUser = async () => {
-      const { id } = router.query;
-
       const q = query(collection(db, "users"));
 
       const data = await getDocs(q);
@@ -23,17 +30,29 @@ const UserPage = () => {
 
       const isValidId = ids.find((existedId) => existedId === id);
 
+      console.log({ id, ids });
+
       if (isValidId) {
         const userData = await getUserByAuthId(id);
         setUser(userData);
+
+        onSnapshot(doc(db, "users", userData.id), (newUser) => {
+          setUser({ ...newUser.data(), id: newUser.id });
+        });
       } else {
         router.push("/404");
       }
     };
-    fetchUser();
+    if (id) {
+      fetchUser();
+    }
   }, [router]);
 
-  return user ? <div>UserPage: {user.username}</div> : null;
+  return user ? (
+    <div>
+      <Profile user={user} />
+    </div>
+  ) : null;
 };
 
 export default UserPage;
