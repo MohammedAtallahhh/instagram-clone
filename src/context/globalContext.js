@@ -18,6 +18,7 @@ export const GlobalProvider = ({ children }) => {
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
+      console.log("CHANGED");
       if (user) {
         const id = user.uid;
         const userData = await getUserByAuthId(id);

@@ -62,8 +62,6 @@ const Comments = ({ id, comments, dateCreated, commentInput }) => {
     getCommentsData();
   }, [comments]);
 
-  console.log({ comments });
-
   return (
     <>
       {comments.length ? (

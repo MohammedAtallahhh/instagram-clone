@@ -15,7 +15,7 @@ import { actions } from "../context/actions";
 
 const classes = {
   container:
-    "container flex justify-center mx-auto w-[90%] max-w-[1200px] items-center h-screen",
+    "flex justify-center items-center mx-auto w-[90%] max-w-[1200px] py-5 lg:py-20",
 
   signUpForm:
     "flex flex-col items-center bg-white p-8 border border-gray-primary mb-4 rounded",

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -8,6 +8,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { GlobalContext } from "../context/globalContext";
 import { DEFAULT_IMAGE_PATH } from "../constants";
+import { actions } from "../context/actions";
 
 import { AiOutlineHome } from "react-icons/ai";
 import { IoMdExit } from "react-icons/io";
@@ -16,7 +17,7 @@ const classes = {
   header: "h-16 bg-white border-b border-gray-primary mb-8",
   contianer: "w-[90%] max-w-[1000px] mx-auto h-full",
   logo: "text-gray-700 text-center flex items-center align-items cursor-pointer",
-  actions: "text-gray-700 text-center flex items-center gap-5",
+  navActions: "text-gray-700 text-center flex items-center gap-5",
   loginButton: "bg-blue-medium font-bold text-sm rounded text-white w-20 h-8",
   signUpButton: "font-bold text-sm rounded text-blue-medium w-20 h-8",
 };
@@ -33,7 +34,7 @@ const Header = () => {
     router.push("/login");
   };
 
-  const { header, contianer, logo, actions, loginButton, signUpButton } =
+  const { header, contianer, logo, navActions, loginButton, signUpButton } =
     classes;
   return (
     <header className={header}>
@@ -52,7 +53,7 @@ const Header = () => {
             </h1>
           </div>
 
-          <div className={actions}>
+          <div className={navActions}>
             {user ? (
               <>
                 {/* Home icon */}

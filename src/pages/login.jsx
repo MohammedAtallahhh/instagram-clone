@@ -14,7 +14,7 @@ import { getUserByAuthId } from "../herlpers/firebase";
 
 const classes = {
   container:
-    "flex flex-col md:flex-row py-10 justify-center items-center gap-10 mx-auto w-[90%] max-w-[1200px] min-h-[100vh] bg-blue-500",
+    "flex flex-col md:flex-row py-5 lg:py-20 justify-center items-center gap-10 mx-auto w-[90%] max-w-[1200px] bg-blue-500",
   formLogo:
     "flex flex-col items-center bg-white p-4 border border-gray-primary mb-4 rounded",
   input:
@@ -29,6 +29,7 @@ const Login = () => {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const isInvalid = password === "" || emailAddress === "";
 
   const { state, dispatch } = useContext(GlobalContext);
@@ -60,7 +61,7 @@ const Login = () => {
     if (state.user && router.pathname !== "/") {
       router.push("/");
     }
-  }, [state, router]);
+  }, [state.user, router]);
 
   const { container, formLogo, input, submitButton, formFooter } = classes;
 
@@ -73,12 +74,12 @@ const Login = () => {
 
       <div className={container}>
         {/* Login image */}
-        <div className="flex max-w-[350px]">
+        <div className="flex max-w-[250px] lg:max-w-[350px]">
           <img src="/images/login-photo.png" alt="iPhone with Instagram app" />
         </div>
 
         {/* Login form */}
-        <div className="flex flex-col max-w-[350px]">
+        <div className="flex flex-col max-w-[330px]">
           <div className={formLogo}>
             <h1 className="flex justify-center w-full">
               <img

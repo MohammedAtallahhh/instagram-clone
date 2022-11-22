@@ -39,12 +39,10 @@ const Timeline = () => {
       setPosts(postsData);
     };
 
-    // if (user?.id) {
-    fetchPosts();
-    // }
-  }, []);
-
-  console.log({ posts });
+    if (user?.id) {
+      fetchPosts();
+    }
+  }, [user]);
   return (
     <div className="flex justify-center">
       {!posts ? (

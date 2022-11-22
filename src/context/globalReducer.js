@@ -1,6 +1,7 @@
 import { actions } from "./actions";
 
 export const globalReducer = (state, action) => {
+  console.log({ action });
   switch (action.type) {
     case actions.LOGIN:
       return {
