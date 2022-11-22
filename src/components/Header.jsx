@@ -14,7 +14,7 @@ import { IoMdExit } from "react-icons/io";
 
 const classes = {
   header: "h-16 bg-white border-b border-gray-primary mb-8",
-  contianer: "w-[90%] max-w-[1400px] mx-auto h-full",
+  contianer: "w-[90%] max-w-[1000px] mx-auto h-full",
   logo: "text-gray-700 text-center flex items-center align-items cursor-pointer",
   actions: "text-gray-700 text-center flex items-center gap-5",
   loginButton: "bg-blue-medium font-bold text-sm rounded text-white w-20 h-8",
@@ -57,7 +57,7 @@ const Header = () => {
               <>
                 {/* Home icon */}
                 <Link href="/" aria-label="Dashboard">
-                  <AiOutlineHome size={30} />
+                  <AiOutlineHome size={32} />
                 </Link>
 
                 {/* User icon */}
@@ -65,7 +65,7 @@ const Header = () => {
                   <Link href={`/p/${user?.auth_id}`}>
                     {" "}
                     <img
-                      className="rounded-full h-8 w-8 flex"
+                      className="rounded-full w-10 flex border border-gray-light"
                       src={DEFAULT_IMAGE_PATH}
                       alt={`${user?.username} profile`}
                     />
@@ -83,7 +83,7 @@ const Header = () => {
                     }
                   }}
                 >
-                  <IoMdExit size={30} />
+                  <IoMdExit size={32} />
                 </button>
               </>
             ) : (

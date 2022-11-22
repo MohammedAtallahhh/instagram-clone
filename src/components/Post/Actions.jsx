@@ -38,36 +38,38 @@ const Actions = ({ id, handleFocus, likesCount, hasLiked }) => {
 
   return (
     <div className="px-3">
-      <div className="flex items-center gap-4 py-2">
-        <button
-          onClick={handleToggleLiked}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleToggleLiked();
-            }
-          }}
-          disabled={liking}
-        >
-          {liking ? (
-            <ImSpinner2 size={26} className="text-gray-base" />
-          ) : liked === false ? (
-            <BsHeart size={26} />
-          ) : (
-            <BsFillHeartFill size={26} className="text-red-primary" />
-          )}
-        </button>
+      {user ? (
+        <div className="flex items-center gap-4 py-2">
+          <button
+            onClick={handleToggleLiked}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                handleToggleLiked();
+              }
+            }}
+            disabled={liking}
+          >
+            {liking ? (
+              <ImSpinner2 size={26} className="text-gray-base" />
+            ) : liked === false ? (
+              <BsHeart size={26} />
+            ) : (
+              <BsFillHeartFill size={26} className="text-red-primary" />
+            )}
+          </button>
 
-        <button
-          onClick={handleFocus}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleFocus();
-            }
-          }}
-        >
-          <FaRegCommentDots size={26} />
-        </button>
-      </div>
+          <button
+            onClick={handleFocus}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                handleFocus();
+              }
+            }}
+          >
+            <FaRegCommentDots size={26} />
+          </button>
+        </div>
+      ) : null}
 
       <div className="py-1">
         <p className="font-medium">

@@ -3,12 +3,9 @@ import {
   arrayUnion,
   collection,
   doc,
-  documentId,
   getDoc,
   getDocs,
-  limit,
   query,
-  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";

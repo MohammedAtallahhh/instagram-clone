@@ -29,8 +29,6 @@ export const GlobalProvider = ({ children }) => {
 
           dispatch({ type: actions.LOGIN, payload: { ...data, id: user.id } });
         });
-      } else {
-        dispatch({ type: actions.LOGOUT });
       }
     });
   }, []);

@@ -9,7 +9,7 @@ import { db } from "../lib/firebase";
 import { GlobalContext } from "../context/globalContext";
 
 const Timeline = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const {
     state: { user },
   } = useContext(GlobalContext);
@@ -39,15 +39,17 @@ const Timeline = () => {
       setPosts(postsData);
     };
 
-    if (user?.id) {
-      fetchPosts();
-    }
-  }, [user]);
+    // if (user?.id) {
+    fetchPosts();
+    // }
+  }, []);
+
+  console.log({ posts });
   return (
     <div className="flex justify-center">
-      {following === undefined ? (
+      {!posts ? (
         <Skeleton count={3} width={400} height={500} className="mb-5" />
-      ) : following.length === 0 ? (
+      ) : following?.length === 0 ? (
         <p className="flex justify-center font-bold">
           Follow other people to see Photos
         </p>

@@ -84,12 +84,12 @@ const Comments = ({ id, comments, dateCreated, commentInput }) => {
                 </div>
 
                 {/* Comment footer */}
-                <div className="text-xs text-gray-text">
+                <div className="text-xs text-gray-base">
                   <span className="mr-3">
                     {formatDistance(dateCreated.seconds * 1000, new Date())} ago
                   </span>
 
-                  {userData.id === user.id ? (
+                  {userData.id === user?.id ? (
                     <button
                       className="text-red-base"
                       onClick={() => handleDeleteComment(id)}
@@ -125,7 +125,8 @@ const Comments = ({ id, comments, dateCreated, commentInput }) => {
           </p>
         </div>
       ) : null}
-      <AddComment id={id} commentInput={commentInput} />
+
+      {user ? <AddComment id={id} commentInput={commentInput} /> : null}
     </>
   );
 };

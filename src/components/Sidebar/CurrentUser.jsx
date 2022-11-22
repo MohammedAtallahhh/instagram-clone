@@ -14,9 +14,7 @@ const CurrentUser = () => {
 
   const { auth_id, username, fullName } = user;
 
-  return !username || !fullName ? (
-    <Skeleton count={1} height={61} />
-  ) : (
+  return (
     <Link
       href={`/p/${auth_id}`}
       className="grid grid-cols-4 gap-4 mb-3 pb-3 items-center border-b border-gray-light"
