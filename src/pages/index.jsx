@@ -2,7 +2,7 @@ import { Sidebar, Timeline } from "../components";
 
 export default function Home() {
   return (
-    <div className="w-[90%] max-w-[1200px] mx-auto flex">
+    <div className="w-[90%] max-w-[1000px] mx-auto flex gap-40">
       <div className="flex-grow">
         <Timeline />
       </div>

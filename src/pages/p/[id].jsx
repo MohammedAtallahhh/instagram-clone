@@ -13,6 +13,7 @@ import { Profile } from "../../components";
 
 import { db } from "../../lib/firebase";
 import { getUserByAuthId } from "../../herlpers/firebase";
+import Skeleton from "react-loading-skeleton";
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
@@ -21,6 +22,7 @@ const UserPage = () => {
 
   useEffect(() => {
     const { id } = router.query;
+
     const fetchUser = async () => {
       const q = query(collection(db, "users"));
 
@@ -30,10 +32,9 @@ const UserPage = () => {
 
       const isValidId = ids.find((existedId) => existedId === id);
 
-      console.log({ id, ids });
-
       if (isValidId) {
         const userData = await getUserByAuthId(id);
+
         setUser(userData);
 
         onSnapshot(doc(db, "users", userData.id), (newUser) => {
@@ -48,11 +49,18 @@ const UserPage = () => {
     }
   }, [router]);
 
-  return user ? (
-    <div>
-      <Profile user={user} />
+  return (
+    <div className="w-[90%] max-w-[800px] mx-auto">
+      {user ? (
+        <Profile user={user} />
+      ) : (
+        <div>
+          <Skeleton height={200} className="mb-5" />
+          <Skeleton height={400} />
+        </div>
+      )}
     </div>
-  ) : null;
+  );
 };
 
 export default UserPage;

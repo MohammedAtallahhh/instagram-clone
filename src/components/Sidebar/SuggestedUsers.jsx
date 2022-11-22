@@ -41,8 +41,6 @@ const SuggestedUsers = () => {
     fetchUsers();
   }, [user]);
 
-  console.log({ user });
-
   return profiles.length ? (
     <div>
       <h2 className="font-medium mb-3">Suggested users</h2>

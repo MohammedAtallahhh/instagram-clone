@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import Link from "next/link";
 import { GlobalContext } from "../../context/globalContext";
 import { followUser } from "../../herlpers/firebase";
+import { DEFAULT_IMAGE_PATH } from "../../constants";
 
 const SuggestedUser = ({ data }) => {
   const [followed, setFollowed] = useState(false);
@@ -22,7 +23,7 @@ const SuggestedUser = ({ data }) => {
       <div className="flex items-center justify-between">
         <img
           className="rounded-full w-8 flex mr-3"
-          src={`/images/default.png`}
+          src={DEFAULT_IMAGE_PATH}
           alt=""
         />
         <Link href={`/p/${auth_id}`}>
