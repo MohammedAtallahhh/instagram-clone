@@ -31,7 +31,7 @@ const Post = ({ data }) => {
   }, []);
 
   return (
-    <div className="max-w-[650px] rounded mb-12 border bg-white border-gray-primary">
+    <div className="rounded mb-12 border bg-white border-gray-primary">
       <Header username={username} auth_id={auth_id} />
 
       <img src={imageSrc} alt={caption} className="mb-3" />

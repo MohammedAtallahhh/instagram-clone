@@ -1,7 +1,6 @@
 import { actions } from "./actions";
 
 export const globalReducer = (state, action) => {
-  console.log({ action });
   switch (action.type) {
     case actions.LOGIN:
       return {
@@ -10,10 +9,9 @@ export const globalReducer = (state, action) => {
       };
 
     case actions.LOGOUT:
-      console.log("HERE");
       return {
         ...state,
-        user: null,
+        user: undefined,
       };
 
     default:

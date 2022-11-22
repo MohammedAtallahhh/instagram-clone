@@ -35,15 +35,13 @@ const ProfileHeader = ({ user, posts }) => {
     setToggling(false);
   };
 
-  console.log({ posts });
-
   return (
-    <div className="flex">
+    <div className="flex justify-center gap-5 md:gap-10 lg:gap-20">
       {/* Header image */}
-      <div className="flex mr-20">
+      <div className="flex">
         {id ? (
           <img
-            className="rounded-full h-36 w-36"
+            className="rounded-full w-16 h-16 md:w-20 md:h-20 lg:h-36 lg:w-36"
             alt={`${fullName} profile picture`}
             src={DEFAULT_IMAGE_PATH}
           />
@@ -53,10 +51,10 @@ const ProfileHeader = ({ user, posts }) => {
       </div>
 
       {/* Header info */}
-      <div className="flex flex-col pt-5">
+      <div className="flex flex-col lg:pt-5">
         <div className="container flex items-center">
           {/* Username */}
-          <h2 className="text-3xl text-gray-text font-normal mr-5">
+          <h2 className="text-2xl lg:text-3xl text-gray-text font-normal mr-5">
             {username}
           </h2>
 
@@ -93,22 +91,22 @@ const ProfileHeader = ({ user, posts }) => {
           {!posts ? (
             <Skeleton count={1} height={24} />
           ) : (
-            <>
-              <p className="mr-10">
+            <div className="flex gap-5 lg:gap-10">
+              <p className="flex items-center gap-1 text-sm lg:text-base">
                 <span className="font-medium">{posts.length} </span>
                 <span className="text-gray-text">Photos</span>
               </p>
-              <p className="mr-10">
+              <p className="flex items-center gap-1 text-sm lg:text-base">
                 <span className="font-medium">{followers.length} </span>
                 <span className="text-gray-text">
                   {followers.length === 1 ? `follower` : `followers`}
                 </span>
               </p>
-              <p className="mr-10">
+              <p className="flex items-center gap-1 text-sm lg:text-base">
                 <span className="font-medium">{following.length} </span>
                 <span className="text-gray-text">following</span>
               </p>
-            </>
+            </div>
           )}
         </div>
         {/* <div className="container mt-4">

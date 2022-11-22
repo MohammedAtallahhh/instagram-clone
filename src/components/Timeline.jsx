@@ -39,14 +39,21 @@ const Timeline = () => {
       setPosts(postsData);
     };
 
-    if (user?.id) {
-      fetchPosts();
-    }
+    // if (user?.id) {
+    fetchPosts();
+    // }
   }, [user]);
+
+  console.log({ posts });
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center max-w-[650px]">
       {!posts ? (
-        <Skeleton count={3} width={400} height={500} className="mb-5" />
+        <Skeleton
+          count={3}
+          height={500}
+          width={350}
+          className="mb-5 text-red-primary"
+        />
       ) : following?.length === 0 ? (
         <p className="flex justify-center font-bold">
           Follow other people to see Photos

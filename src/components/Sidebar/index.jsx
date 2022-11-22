@@ -4,6 +4,7 @@ import CurrentUser from "./CurrentUser";
 import SuggestedUsers from "./SuggestedUsers";
 
 import { GlobalContext } from "../../context/globalContext";
+import Skeleton from "react-loading-skeleton";
 
 const Sidebar = () => {
   const {
@@ -15,7 +16,9 @@ const Sidebar = () => {
       <CurrentUser />
       <SuggestedUsers />
     </div>
-  ) : null;
+  ) : (
+    <Skeleton width={300} height={400} />
+  );
 };
 
 export default Sidebar;
