@@ -17,7 +17,7 @@ export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(globalReducer, initialState);
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
+    const un = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const id = user.uid;
         const userData = await getUserByAuthId(id);
@@ -33,6 +33,8 @@ export const GlobalProvider = ({ children }) => {
         dispatch({ type: actions.LOGOUT });
       }
     });
+
+    return () => un();
   }, []);
 
   return (

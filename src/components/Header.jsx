@@ -13,6 +13,7 @@ import { actions } from "../context/actions";
 import { AiOutlineHome } from "react-icons/ai";
 import { IoMdExit } from "react-icons/io";
 import AddPost from "./AddPost";
+import Skeleton from "react-loading-skeleton";
 
 const classes = {
   header: "h-16 bg-white border-b border-gray-primary mb-8",
@@ -55,7 +56,9 @@ const Header = () => {
           </div>
 
           <div className={navActions}>
-            {user ? (
+            {user === null ? (
+              <Skeleton height={40} width={150} />
+            ) : user ? (
               <>
                 {/* Home icon */}
                 <Link href="/" aria-label="Dashboard">
@@ -70,7 +73,7 @@ const Header = () => {
                   <Link href={`/p/${user?.auth_id}`}>
                     {" "}
                     <img
-                      className="rounded-full w-8 lg:w-10 flex border border-gray-light"
+                      className="rounded-full w-9 flex border border-gray-light"
                       src={DEFAULT_IMAGE_PATH}
                       alt={`${user?.username} profile`}
                     />

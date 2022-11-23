@@ -2,7 +2,6 @@ import {
   collection,
   documentId,
   getDocs,
-  onSnapshot,
   query,
   where,
 } from "firebase/firestore";

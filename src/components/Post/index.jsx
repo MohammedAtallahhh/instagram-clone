@@ -18,7 +18,7 @@ const Post = ({ data }) => {
     comments,
     dateCreated,
     user_id,
-    userData: { username, auth_id },
+    userData: { username, fullName, auth_id },
   } = data;
 
   const [realtimeComments, setRealtimeComments] = useState(comments);
@@ -28,13 +28,15 @@ const Post = ({ data }) => {
   const handleFocus = () => commentInput.current.focus();
 
   useEffect(() => {
-    onSnapshot(doc(db, "posts", id), (newPost) => {
+    const un = onSnapshot(doc(db, "posts", id), (newPost) => {
       if (!newPost.exists()) {
         setExists(false);
         return;
       }
       setRealtimeComments(newPost.data().comments);
     });
+
+    return () => un();
   }, []);
 
   return exists ? (
@@ -74,7 +76,7 @@ const Post = ({ data }) => {
           realtimeComments.length ? "border-b border-gray-light" : ""
         }`}
       >
-        <span className="mr-2 font-semibold">{username}</span>
+        <span className="mr-2 font-semibold">{fullName}</span>
         <span className="italic">{caption ? caption : "No Caption."}</span>
       </div>
 

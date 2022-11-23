@@ -1,13 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import Skeleton from "react-loading-skeleton";
 
 import Post from "./Post";
@@ -26,6 +19,8 @@ const Timeline = () => {
   const fetchPosts = async () => {
     const q = query(collection(db, "posts"));
     const res = await getDocs(q);
+
+    console.log(res.docs.map((d) => d.data()));
 
     let postsData = await Promise.all(
       res.docs.map(async (post) => {
@@ -47,12 +42,10 @@ const Timeline = () => {
     setPosts(postsData);
   };
 
-  console.log({ posts });
-
   useEffect(() => {
-    // if (user?.id) {
-    fetchPosts();
-    // }
+    if (user !== null) {
+      fetchPosts();
+    }
   }, [user]);
 
   // useEffect(() => {

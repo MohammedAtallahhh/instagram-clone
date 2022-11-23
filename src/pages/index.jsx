@@ -18,6 +18,7 @@ export default function Home() {
   //     router.push("/login");
   //   }
   // }, [user, router]);
+
   return (
     <>
       <Head>
