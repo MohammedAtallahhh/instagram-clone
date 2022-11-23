@@ -89,7 +89,7 @@ const ProfileHeader = ({ user, posts }) => {
         {/* User Stats */}
         <div className="flex mt-4">
           {!posts ? (
-            <Skeleton count={1} height={24} />
+            <Skeleton count={1} height={40} width={250} />
           ) : (
             <div className="flex gap-5 lg:gap-10">
               <p className="flex items-center gap-1 text-sm lg:text-base">
@@ -109,11 +109,6 @@ const ProfileHeader = ({ user, posts }) => {
             </div>
           )}
         </div>
-        {/* <div className="container mt-4">
-          <p className="font-medium">
-            {!fullName ? <Skeleton count={1} height={24} /> : username}
-          </p>
-        </div> */}
       </div>
     </div>
   );

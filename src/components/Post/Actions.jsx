@@ -41,6 +41,7 @@ const Actions = ({ id, handleFocus, likesCount, hasLiked }) => {
       {user ? (
         <div className="flex items-center gap-4 py-2">
           <button
+            name="like"
             onClick={handleToggleLiked}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
@@ -50,7 +51,7 @@ const Actions = ({ id, handleFocus, likesCount, hasLiked }) => {
             disabled={liking}
           >
             {liking ? (
-              <ImSpinner2 size={26} className="text-gray-base" />
+              <ImSpinner2 size={26} className="text-red-primary" />
             ) : liked === false ? (
               <BsHeart size={26} />
             ) : (
@@ -59,6 +60,7 @@ const Actions = ({ id, handleFocus, likesCount, hasLiked }) => {
           </button>
 
           <button
+            name="comment"
             onClick={handleFocus}
             onKeyDown={(event) => {
               if (event.key === "Enter") {

@@ -15,10 +15,10 @@ module.exports = {
       },
       black: {
         light: "#262626",
-        faded: "#00000059",
+        faded: "#00000075",
       },
       gray: {
-        background: "#fafafa",
+        background: "#eee",
         light: "#ddd",
         primary: "#dbdbdb",
         base: "#616161",

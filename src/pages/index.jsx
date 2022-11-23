@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Sidebar, Timeline } from "../components";
 import { GlobalContext } from "../context/globalContext";
 import Skeleton from "react-loading-skeleton";
+import Head from "next/head";
 
 export default function Home() {
   const {
@@ -18,18 +19,20 @@ export default function Home() {
   //   }
   // }, [user, router]);
   return (
-    <div className="w-[90%] max-w-[800px] mx-auto flex gap-12">
-      <div className="lg:w-[60%] max-w-[450px] mx-auto">
-        <Timeline />
-      </div>
-
-      {user === undefined ? null : user === null ? (
-        <Skeleton width={300} height={400} />
-      ) : (
-        <div className="hidden lg:block w-[40%]">
-          <Sidebar />
+    <>
+      <Head>
+        <title>Instagram</title>
+      </Head>
+      <div className="w-[90%] max-w-[800px] mx-auto flex gap-12">
+        <div className="w-[90%] lg:w-[60%] max-w-[650px] mx-auto flex justify-center">
+          <Timeline />
         </div>
-      )}
-    </div>
+        {user ? (
+          <div className="hidden lg:block w-[40%]">
+            <Sidebar />
+          </div>
+        ) : null}
+      </div>
+    </>
   );
 }

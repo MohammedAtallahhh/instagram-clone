@@ -16,9 +16,9 @@ const Sidebar = () => {
       <CurrentUser />
       <SuggestedUsers />
     </div>
-  ) : (
+  ) : user === null ? (
     <Skeleton width={300} height={400} />
-  );
+  ) : null;
 };
 
 export default Sidebar;

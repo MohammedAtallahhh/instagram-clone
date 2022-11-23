@@ -12,12 +12,13 @@ import { actions } from "../context/actions";
 
 import { AiOutlineHome } from "react-icons/ai";
 import { IoMdExit } from "react-icons/io";
+import AddPost from "./AddPost";
 
 const classes = {
   header: "h-16 bg-white border-b border-gray-primary mb-8",
   contianer: "w-[90%] max-w-[1000px] mx-auto h-full",
   logo: "text-gray-700 text-center flex items-center align-items cursor-pointer",
-  navActions: "text-gray-700 text-center flex items-center gap-5",
+  navActions: "text-gray-700 text-center flex items-center gap-4 md:gap-5",
   loginButton: "bg-blue-medium font-bold text-sm rounded text-white w-20 h-8",
   signUpButton: "font-bold text-sm rounded text-blue-medium w-20 h-8",
 };
@@ -61,12 +62,15 @@ const Header = () => {
                   <AiOutlineHome size={32} />
                 </Link>
 
+                {/* Add post button */}
+                <AddPost />
+
                 {/* User icon */}
                 <div className="flex items-center cursor-pointer">
                   <Link href={`/p/${user?.auth_id}`}>
                     {" "}
                     <img
-                      className="rounded-full w-10 flex border border-gray-light"
+                      className="rounded-full w-8 lg:w-10 flex border border-gray-light"
                       src={DEFAULT_IMAGE_PATH}
                       alt={`${user?.username} profile`}
                     />
@@ -76,6 +80,7 @@ const Header = () => {
                 {/* Logout button */}
                 <button
                   type="button"
+                  name="sign-out"
                   title="Sign Out"
                   onClick={handleSignOut}
                   onKeyDown={(event) => {
@@ -84,18 +89,18 @@ const Header = () => {
                     }
                   }}
                 >
-                  <IoMdExit size={32} />
+                  <IoMdExit size={34} />
                 </button>
               </>
             ) : (
               <>
                 <Link href="/login">
-                  <button type="button" className={loginButton}>
+                  <button type="button" name="login" className={loginButton}>
                     Log In
                   </button>
                 </Link>
-                <Link href="/sign-up">
-                  <button type="button" className={signUpButton}>
+                <Link href="/sign-up" className="hidden md:inline-block">
+                  <button type="button" name="sign-up" className={signUpButton}>
                     Sign Up
                   </button>
                 </Link>

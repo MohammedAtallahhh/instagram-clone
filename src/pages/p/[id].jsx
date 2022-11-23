@@ -14,6 +14,7 @@ import { Profile } from "../../components";
 import { db } from "../../lib/firebase";
 import { getUserByAuthId } from "../../herlpers/firebase";
 import Skeleton from "react-loading-skeleton";
+import Head from "next/head";
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
@@ -50,16 +51,21 @@ const UserPage = () => {
   }, [router]);
 
   return (
-    <div className="w-[90%] max-w-[800px] mx-auto">
-      {user ? (
-        <Profile user={user} />
-      ) : (
-        <div>
-          <Skeleton height={200} className="mb-5" />
-          <Skeleton height={400} />
-        </div>
-      )}
-    </div>
+    <>
+      <Head>
+        <title>{user ? user?.fullName : "Loading.."}</title>
+      </Head>
+      <div className="w-[90%] max-w-[800px] mx-auto">
+        {user ? (
+          <Profile user={user} />
+        ) : (
+          <div>
+            <Skeleton height={200} className="mb-5" />
+            <Skeleton height={400} />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

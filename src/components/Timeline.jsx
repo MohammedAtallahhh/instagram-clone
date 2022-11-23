@@ -1,6 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 import Skeleton from "react-loading-skeleton";
 
 import Post from "./Post";
@@ -16,37 +23,55 @@ const Timeline = () => {
 
   const following = user?.following;
 
+  const fetchPosts = async () => {
+    const q = query(collection(db, "posts"));
+    const res = await getDocs(q);
+
+    let postsData = await Promise.all(
+      res.docs.map(async (post) => {
+        const userRef = doc(db, "users", post.data().user_id);
+        const res = await getDoc(userRef);
+
+        let hasLiked = !!post.data().likes.find((l) => l === user?.id);
+        return {
+          id: post.id,
+          ...post.data(),
+          hasLiked,
+          userData: res.data(),
+        };
+      })
+    );
+
+    postsData = postsData.sort((a, b) => b.dateCreated - a.dateCreated);
+
+    setPosts(postsData);
+  };
+
+  console.log({ posts });
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      const q = query(collection(db, "posts"));
-      const res = await getDocs(q);
-
-      const postsData = await Promise.all(
-        res.docs.map(async (post) => {
-          const userRef = doc(db, "users", post.data().user_id);
-          const res = await getDoc(userRef);
-
-          let hasLiked = !!post.data().likes.find((l) => l === user?.id);
-          return {
-            id: post.id,
-            ...post.data(),
-            hasLiked,
-            userData: res.data(),
-          };
-        })
-      );
-
-      setPosts(postsData);
-    };
-
     // if (user?.id) {
     fetchPosts();
     // }
   }, [user]);
 
-  console.log({ posts });
+  // useEffect(() => {
+  //   let unsubscribe;
+  //   if (posts) {
+  //     unsubscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
+  //       snapshot.docChanges().forEach((change) => {
+  //         if (change.type === "added") {
+  //           console.log({ change });
+  //         }
+  //       });
+  //     });
+  //   }
+
+  //   return () => unsubscribe && unsubscribe();
+  // }, [posts]);
+
   return (
-    <div className="flex justify-center max-w-[650px]">
+    <div className="flex justify-center w-full max-w-[500px]">
       {!posts ? (
         <Skeleton
           count={3}
@@ -59,7 +84,7 @@ const Timeline = () => {
           Follow other people to see Photos
         </p>
       ) : posts ? (
-        <ul>
+        <ul className="w-full">
           {posts.map((p) => (
             <Post key={p.id} data={p} />
           ))}

@@ -118,11 +118,12 @@ const Comments = ({ id, comments, dateCreated, commentInput }) => {
           ) : null}
 
           {/* Post date  */}
-          <p className="text-gray-base uppercase text-[0.7rem] mt-3">
-            {formatDistance(dateCreated.seconds * 1000, new Date())} ago
-          </p>
         </div>
       ) : null}
+
+      <p className="date text-gray-base uppercase text-[0.7rem] p-3 pt-0">
+        {formatDistance(dateCreated.seconds * 1000, new Date())} ago
+      </p>
 
       {user ? <AddComment id={id} commentInput={commentInput} /> : null}
     </>
