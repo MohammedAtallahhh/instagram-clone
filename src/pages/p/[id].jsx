@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 import {
   collection,
@@ -18,15 +18,24 @@ import { db } from "../../lib/firebase";
 const UserPage = ({ userData }) => {
   const [user, setUser] = useState(userData);
 
+  const router = useRouter();
+
   useEffect(() => {
-    const un = onSnapshot(doc(db, "users", userData.id), (newUser) => {
-      setUser({ ...newUser.data(), id: newUser.id });
-    });
+    if (userData) {
+      const un = onSnapshot(doc(db, "users", userData.id), (newUser) => {
+        setUser({ ...newUser.data(), id: newUser.id });
+      });
 
-    return () => un();
-  }, [userData.id]);
+      return () => un();
+    }
+  }, [userData]);
 
-  return (
+  useEffect(() => {
+    if (!userData) {
+      router.push("/404");
+    }
+  }, [router, userData]);
+  return user ? (
     <>
       <Head>
         <title>{user.fullName}</title>
@@ -35,7 +44,7 @@ const UserPage = ({ userData }) => {
         <Profile user={user} />
       </div>
     </>
-  );
+  ) : null;
 };
 
 export const getServerSideProps = async ({ query: { id } }) => {
@@ -57,7 +66,11 @@ export const getServerSideProps = async ({ query: { id } }) => {
       },
     };
   } else {
-    Router.push("/404");
+    return {
+      props: {
+        userData: null,
+      },
+    };
   }
 };
 

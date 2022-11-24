@@ -73,7 +73,7 @@ export const getServerSideProps = async (ctx) => {
       likes: d.data().likes.map((l) => JSON.parse(JSON.stringify(l))),
       comments: d.data().comments.map((c) => JSON.parse(JSON.stringify(c))),
     }))
-    .sort((a, b) => b.dateCreated - a.dateCreated);
+    .sort((a, b) => b.dateCreated.seconds - a.dateCreated.seconds);
 
   return {
     props: {

@@ -5,13 +5,21 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { GlobalContext } from "../../context/globalContext";
 import { DEFAULT_IMAGE_PATH } from "../../constants";
 import { isUserFollowingProfile, ToggleFollow } from "../../herlpers/firebase";
+import toast from "react-hot-toast";
+import { uuidv4 } from "@firebase/util";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { db, storage } from "../../lib/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 const ProfileHeader = ({ user, posts }) => {
-  const { id, username, fullName, followers, following } = user;
+  const { id, username, fullName, followers, following, profilePicture } = user;
 
   const [isCurrentUser, setIsCurrentUser] = useState(false);
   const [isFollowingProfile, setIsFollowingProfile] = useState(null);
   const [Toggling, setToggling] = useState(false);
+
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const {
     state: { user: currentUser },
@@ -35,18 +43,109 @@ const ProfileHeader = ({ user, posts }) => {
     setToggling(false);
   };
 
+  const setProfilePicture = async (url) => {
+    const userRef = doc(db, "users", currentUser.id);
+
+    await updateDoc(userRef, {
+      profilePicture: url,
+    });
+  };
+
+  const uploadProfilePicture = async () => {
+    if (!file) return toast.error("please select a image first");
+
+    setUploading(true);
+
+    const toastId = toast.loading("uploading your post, wait a minute...");
+    const pictureName = `profile-pictures/${uuidv4()}-${file.name}`;
+
+    const storageRef = ref(storage, pictureName);
+
+    try {
+      const uploadTask = await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(uploadTask.ref);
+
+      console.log(url);
+      await setProfilePicture(url);
+
+      toast.success("image has uploaded", {
+        id: toastId,
+      });
+    } catch (error) {
+      toast.error(error.message, {
+        id: toastId,
+      });
+    } finally {
+      setFile("");
+      setUploading(false);
+      // router.reload(window.location.pathname);
+    }
+  };
+
+  useEffect(() => {
+    const reader = new FileReader();
+
+    const handleEvent = (e) => {
+      switch (e.type) {
+        case "load":
+          uploadProfilePicture();
+          return;
+        case "error":
+          return toast.error(e);
+        default:
+          return;
+      }
+    };
+
+    if (file) {
+      reader.addEventListener("load", handleEvent);
+      reader.addEventListener("error", handleEvent);
+      reader.readAsDataURL(file);
+    }
+
+    return () => {
+      reader.removeEventListener("load", handleEvent);
+      reader.removeEventListener("error", handleEvent);
+    };
+  }, [file]);
+
   return (
-    <div className="flex justify-center gap-5 md:gap-10 lg:gap-20 min-h-[200px] border-b border-gray-light">
+    <div className="flex justify-center gap-5 md:gap-10 lg:gap-20 border-b border-gray-light pb-24">
       {/* Header image */}
-      <div className="flex">
-        {id ? (
-          <img
-            className="rounded-full w-16 h-16 md:w-20 md:h-20 lg:h-36 lg:w-36"
-            alt={`${fullName} profile picture`}
-            src={DEFAULT_IMAGE_PATH}
-          />
+      <div className="flex relative w-16 h-16 md:w-20 md:h-20 lg:h-36 lg:w-36">
+        {uploading ? (
+          <Skeleton containerClassName="w-full h-full" height={"100%"} circle />
         ) : (
-          <Skeleton circle height={150} width={150} count={1} />
+          <>
+            <img
+              className="object-cover w-full rounded-full"
+              alt={`${fullName} profile picture`}
+              src={profilePicture ?? DEFAULT_IMAGE_PATH}
+            />
+
+            <>
+              {id === currentUser?.id ? (
+                <>
+                  <label
+                    htmlFor="profilePicture"
+                    className="absolute inset-0 bottom-[-20%] flex justify-center items-end text-xs text-center text-gray-base cursor-pointer"
+                  >
+                    <span className="hidden lg:inline-block">
+                      Change profile picture
+                    </span>
+                    <span className="inline-block lg:hidden">Change</span>
+                  </label>
+
+                  <input
+                    type="file"
+                    id="profilePicture"
+                    className="hidden"
+                    onChange={(e) => setFile(e.target.files[0])}
+                  />
+                </>
+              ) : null}
+            </>
+          </>
         )}
       </div>
 

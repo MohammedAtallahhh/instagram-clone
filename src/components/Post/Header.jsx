@@ -5,17 +5,24 @@ import { DEFAULT_IMAGE_PATH } from "../../constants";
 
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { deleteDoc, doc } from "firebase/firestore";
-import { db } from "../../lib/firebase";
+import { db, storage } from "../../lib/firebase";
 import { GlobalContext } from "../../context/globalContext";
+import { deleteObject, ref } from "firebase/storage";
 
-const Header = ({ postId, userId, fullName, auth_id }) => {
+const Header = ({ postId, userId, userImage, fullName, imageSrc }) => {
   const {
     state: { user },
   } = useContext(GlobalContext);
 
   const handleDeletePost = async () => {
     const postRef = doc(db, "posts", postId);
+    const postImageRef = ref(storage, imageSrc);
+
     await deleteDoc(postRef);
+
+    deleteObject(postImageRef).catch((error) => {
+      console.log({ error });
+    });
   };
 
   return (
@@ -23,8 +30,8 @@ const Header = ({ postId, userId, fullName, auth_id }) => {
       <div className="flex items-center">
         <Link href={`/p/${userId}`} className="flex items-center">
           <img
-            className="rounded-full h-8 w-8 flex mr-3"
-            src={DEFAULT_IMAGE_PATH}
+            className="rounded-full h-8 w-8 flex mr-3 object-cover"
+            src={userImage ?? DEFAULT_IMAGE_PATH}
             alt={`${fullName} profile picture`}
           />
           <p className="font-medium">{fullName}</p>

@@ -21,8 +21,8 @@ const CurrentUser = () => {
     >
       <div className="flex items-center justify-between col-span-1">
         <img
-          className="rounded-full w-14 flex mr-3"
-          src={DEFAULT_IMAGE_PATH}
+          className="rounded-full w-14 h-14 object-cover flex mr-3"
+          src={user?.profilePicture ?? DEFAULT_IMAGE_PATH}
           alt=""
         />
       </div>

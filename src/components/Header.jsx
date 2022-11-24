@@ -11,7 +11,6 @@ import { DEFAULT_IMAGE_PATH } from "../constants";
 import { actions } from "../context/actions";
 
 import { AiOutlineHome } from "react-icons/ai";
-import { IoMdExit } from "react-icons/io";
 import AddPost from "./AddPost";
 import Skeleton from "react-loading-skeleton";
 
@@ -68,12 +67,12 @@ const Header = () => {
                 <AddPost />
 
                 {/* User icon */}
-                <div className="flex items-center cursor-pointer w-10 md:w-9">
-                  <Link href={`/p/${user?.auth_id}`}>
+                <div className="flex items-center cursor-pointer w-10 h-10 md:w-9 md:h-9">
+                  <Link href={`/p/${user?.id}`} className="h-full w-full">
                     {" "}
                     <img
-                      className="rounded-full border border-gray-light"
-                      src={DEFAULT_IMAGE_PATH}
+                      className="rounded-full w-full h-full border border-gray-light object-cover"
+                      src={user?.profilePicture ?? DEFAULT_IMAGE_PATH}
                       alt={`${user?.username} profile`}
                     />
                   </Link>

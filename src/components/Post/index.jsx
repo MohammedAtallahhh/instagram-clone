@@ -65,9 +65,10 @@ const Post = ({ data }) => {
     <div className="rounded mb-12 border border-gray-primary bg-white">
       <Header
         fullName={userData?.fullName}
-        auth_id={userData?.auth_id}
         postId={id}
         userId={user_id}
+        userImage={userData?.profilePicture}
+        imageSrc={imageSrc}
       />
 
       <div

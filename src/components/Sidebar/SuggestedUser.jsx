@@ -17,13 +17,14 @@ const SuggestedUser = ({ data }) => {
     await followUser(user.id, id);
     setFollowed(true);
   };
-  const { username, id } = data;
+  const { username, id, profilePicture } = data;
+  console.log({ data });
   return !followed ? (
     <div className="flex flex-row items-center justify-between py-2">
       <div className="flex items-center justify-between">
         <img
-          className="rounded-full w-8 flex mr-3"
-          src={DEFAULT_IMAGE_PATH}
+          className="rounded-full w-8 h-8 object-cover mr-2"
+          src={profilePicture ?? DEFAULT_IMAGE_PATH}
           alt=""
         />
         <Link href={`/p/${id}`}>

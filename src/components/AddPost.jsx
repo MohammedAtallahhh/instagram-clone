@@ -19,7 +19,7 @@ const classes = {
   modal:
     "w-[90%] max-w-[700px] h-[500px] flex flex-col justify-center items-center gap-5 bg-white border border-gray-light p-4 rounded-lg ",
   caption:
-    "w-full px-2 py-4 border border-gray-light rounded outline-none  focus:border-gray-base focus:bg-gray-background",
+    "text-sm w-full px-2 py-4 border border-gray-light rounded outline-none focus:border-gray-base focus:bg-gray-background",
 
   btn: "bg-blue-medium font-bold text-sm rounded text-white px-3 py-2 cursor-pointer",
 };
