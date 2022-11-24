@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import Head from "next/head";
+import Router, { useRouter } from "next/router";
 
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   onSnapshot,
   query,
@@ -12,61 +14,51 @@ import {
 import { Profile } from "../../components";
 
 import { db } from "../../lib/firebase";
-import { getUserByAuthId } from "../../herlpers/firebase";
-import Skeleton from "react-loading-skeleton";
-import Head from "next/head";
 
-const UserPage = () => {
-  const [user, setUser] = useState(null);
-
-  const router = useRouter();
+const UserPage = ({ userData }) => {
+  const [user, setUser] = useState(userData);
 
   useEffect(() => {
-    const { id } = router.query;
+    const un = onSnapshot(doc(db, "users", userData.id), (newUser) => {
+      setUser({ ...newUser.data(), id: newUser.id });
+    });
 
-    const fetchUser = async () => {
-      const q = query(collection(db, "users"));
-
-      const data = await getDocs(q);
-
-      const ids = data.docs.map((d) => d.data().auth_id);
-
-      const isValidId = ids.find((existedId) => existedId === id);
-
-      if (isValidId) {
-        const userData = await getUserByAuthId(id);
-
-        setUser(userData);
-
-        onSnapshot(doc(db, "users", userData.id), (newUser) => {
-          setUser({ ...newUser.data(), id: newUser.id });
-        });
-      } else {
-        router.push("/404");
-      }
-    };
-    if (id) {
-      fetchUser();
-    }
-  }, [router]);
+    return () => un();
+  }, [userData.id]);
 
   return (
     <>
       <Head>
-        <title>{user ? user?.fullName : "Loading.."}</title>
+        <title>{user.fullName}</title>
       </Head>
       <div className="w-[90%] max-w-[800px] mx-auto">
-        {user ? (
-          <Profile user={user} />
-        ) : (
-          <div>
-            <Skeleton height={200} className="mb-5" />
-            <Skeleton height={400} />
-          </div>
-        )}
+        <Profile user={user} />
       </div>
     </>
   );
+};
+
+export const getServerSideProps = async ({ query: { id } }) => {
+  const userRef = doc(db, "users", id);
+  const userRes = await getDoc(userRef);
+
+  const q = query(collection(db, "users"));
+
+  const postsRes = await getDocs(q);
+
+  const ids = postsRes.docs.map((d) => d.id);
+
+  const isValidId = ids.find((existedId) => existedId === id);
+
+  if (isValidId) {
+    return {
+      props: {
+        userData: { ...userRes.data(), id: userRes.id },
+      },
+    };
+  } else {
+    Router.push("/404");
+  }
 };
 
 export default UserPage;

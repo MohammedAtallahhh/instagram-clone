@@ -18,8 +18,9 @@ import Skeleton from "react-loading-skeleton";
 const classes = {
   header: "h-16 bg-white border-b border-gray-primary mb-8",
   contianer: "w-[90%] max-w-[1000px] mx-auto h-full",
-  logo: "text-gray-700 text-center flex items-center align-items cursor-pointer",
-  navActions: "text-gray-700 text-center flex items-center gap-4 md:gap-5",
+  logo: "items-center align-items cursor-pointer hidden md:flex",
+  navActions:
+    "text-4xl flex items-center justify-center gap-8 w-full md:gap-5 md:w-[unset] md:text-3xl",
   loginButton: "bg-blue-medium font-bold text-sm rounded text-white w-20 h-8",
   signUpButton: "font-bold text-sm rounded text-blue-medium w-20 h-8",
 };
@@ -44,15 +45,13 @@ const Header = () => {
         <div className="flex justify-between h-full">
           {/* Logo */}
           <div className={logo}>
-            <h1 className="flex justify-center w-full">
-              <Link href="/" aria-label="Instagram logo">
-                <img
-                  src="/images/logo.png"
-                  alt="Instagram"
-                  className="mt-2 w-6/12"
-                />
-              </Link>
-            </h1>
+            <Link href="/" aria-label="Instagram logo">
+              <img
+                src="/images/logo.png"
+                alt="Instagram"
+                className="mt-2 w-6/12"
+              />
+            </Link>
           </div>
 
           <div className={navActions}>
@@ -62,18 +61,18 @@ const Header = () => {
               <>
                 {/* Home icon */}
                 <Link href="/" aria-label="Dashboard">
-                  <AiOutlineHome size={32} />
+                  <AiOutlineHome />
                 </Link>
 
                 {/* Add post button */}
                 <AddPost />
 
                 {/* User icon */}
-                <div className="flex items-center cursor-pointer">
+                <div className="flex items-center cursor-pointer w-10 md:w-9">
                   <Link href={`/p/${user?.auth_id}`}>
                     {" "}
                     <img
-                      className="rounded-full w-9 flex border border-gray-light"
+                      className="rounded-full border border-gray-light"
                       src={DEFAULT_IMAGE_PATH}
                       alt={`${user?.username} profile`}
                     />
@@ -85,6 +84,7 @@ const Header = () => {
                   type="button"
                   name="sign-out"
                   title="Sign Out"
+                  className={`${loginButton} bg-red-primary`}
                   onClick={handleSignOut}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
@@ -92,7 +92,7 @@ const Header = () => {
                     }
                   }}
                 >
-                  <IoMdExit size={34} />
+                  Sign out
                 </button>
               </>
             ) : (

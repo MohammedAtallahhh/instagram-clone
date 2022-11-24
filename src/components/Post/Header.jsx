@@ -21,7 +21,7 @@ const Header = ({ postId, userId, fullName, auth_id }) => {
   return (
     <div className="flex justify-between items-center border-b border-gray-primary py-3 px-4 text-sm">
       <div className="flex items-center">
-        <Link href={`/p/${auth_id}`} className="flex items-center">
+        <Link href={`/p/${userId}`} className="flex items-center">
           <img
             className="rounded-full h-8 w-8 flex mr-3"
             src={DEFAULT_IMAGE_PATH}

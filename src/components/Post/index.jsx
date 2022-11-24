@@ -12,6 +12,7 @@ import { GlobalContext } from "../../context/globalContext";
 import { useLikes } from "../../hooks/useLikes";
 import { db } from "../../lib/firebase";
 import Skeleton from "react-loading-skeleton";
+import Link from "next/link";
 
 const Post = ({ data }) => {
   const { id, imageSrc, caption, likes, comments, dateCreated, user_id } = data;
@@ -104,7 +105,9 @@ const Post = ({ data }) => {
             realtimeComments.length ? "border-b border-gray-light" : ""
           }`}
         >
-          <span className="mr-2 font-semibold">{userData?.fullName}</span>
+          <Link href={`/p/${user_id}`} className="mr-2 font-semibold">
+            {userData?.fullName}
+          </Link>
           <span className="italic">{caption ? caption : "No Caption."}</span>
         </div>
 

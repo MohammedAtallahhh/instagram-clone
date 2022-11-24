@@ -12,11 +12,11 @@ const CurrentUser = () => {
     state: { user },
   } = useContext(GlobalContext);
 
-  const { auth_id, username, fullName } = user;
+  const { id, username, fullName } = user;
 
   return (
     <Link
-      href={`/p/${auth_id}`}
+      href={`/p/${id}`}
       className="grid grid-cols-4 gap-4 mb-3 pb-3 items-center border-b border-gray-light"
     >
       <div className="flex items-center justify-between col-span-1">

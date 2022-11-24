@@ -117,7 +117,6 @@ const AddPost = () => {
         id: toastId,
       });
     } catch (error) {
-      console.log({ error });
       toast.error("failed to upload the image", {
         id: toastId,
       });
@@ -127,6 +126,7 @@ const AddPost = () => {
         isUploading: false,
         caption: "",
       });
+
       setFile("");
       setShowModal(false);
       router.reload(window.location.pathname);
@@ -138,7 +138,7 @@ const AddPost = () => {
   return (
     <>
       <button name="add post" onClick={() => setShowModal(true)}>
-        <CgAddR size={32} />
+        <CgAddR />
       </button>
       {showModal ? (
         <div

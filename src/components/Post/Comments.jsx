@@ -6,7 +6,7 @@ import { GlobalContext } from "../../context/globalContext";
 import { db } from "../../lib/firebase";
 import AddComment from "./AddComment";
 
-const Comments = ({ id, comments, dateCreated, commentInput }) => {
+const Comments = ({ id, comments, dateCreated }) => {
   const [commentsData, setCommentsData] = useState(null);
   const [commentsSlice, setCommentsSlice] = useState(3);
 
@@ -73,7 +73,7 @@ const Comments = ({ id, comments, dateCreated, commentInput }) => {
               <div key={i + userData.auth_id} className="mb-4">
                 {/* Comment */}
                 <div className="flex">
-                  <Link href={`/p/${userData.auth_id}`}>
+                  <Link href={`/p/${userData.id}`}>
                     <h4 className="text-gray-text font-semibold mr-2">
                       {userData.fullName}
                     </h4>

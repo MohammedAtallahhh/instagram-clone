@@ -18,25 +18,25 @@ const ProfileHeader = ({ user, posts }) => {
   } = useContext(GlobalContext);
 
   useEffect(() => {
-    setIsCurrentUser(currentUser?.id === id);
-
     const fetch = async () => {
-      const isFollowing = await isUserFollowingProfile(currentUser.id, id);
+      setIsCurrentUser(currentUser?.id === id);
+      const isFollowing = await isUserFollowingProfile(currentUser?.id, id);
       setIsFollowingProfile(isFollowing);
     };
 
-    fetch();
-  }, [id, currentUser.id]);
+    if (currentUser) {
+      fetch();
+    }
+  }, [id, currentUser]);
 
   const handleToggleFollow = async () => {
     setToggling(true);
-    await ToggleFollow(isFollowingProfile, currentUser.id, id);
-    setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
+    await ToggleFollow(isFollowingProfile, currentUser?.id, id);
     setToggling(false);
   };
 
   return (
-    <div className="flex justify-center gap-5 md:gap-10 lg:gap-20">
+    <div className="flex justify-center gap-5 md:gap-10 lg:gap-20 min-h-[200px] border-b border-gray-light">
       {/* Header image */}
       <div className="flex">
         {id ? (
@@ -60,14 +60,7 @@ const ProfileHeader = ({ user, posts }) => {
 
           {/* Follow Button */}
 
-          {isCurrentUser ? null : isFollowingProfile === null ? (
-            <Skeleton
-              count={1}
-              width={80}
-              height={32}
-              className="bg-blue-medium/20"
-            />
-          ) : (
+          {isCurrentUser ? null : (
             <button
               className={`bg-blue-medium font-bold text-sm rounded text-white w-20 h-8 ${
                 Toggling ? "opacity-50" : ""
