@@ -27,7 +27,7 @@ const SuggestedUser = ({ data }) => {
           alt=""
         />
         <Link href={`/p/${auth_id}`}>
-          <p className="font-bold text-sm">{username}</p>
+          <p className="font-bold text-sm text-gray-text">{username}</p>
         </Link>
       </div>
       <button

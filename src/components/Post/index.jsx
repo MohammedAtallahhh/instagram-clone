@@ -1,28 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
 import Actions from "./Actions";
 import Comments from "./Comments";
 import Header from "./Header";
+import AddComment from "./AddComment";
+
+import { GlobalContext } from "../../context/globalContext";
+import { useLikes } from "../../hooks/useLikes";
 import { db } from "../../lib/firebase";
-import Image from "next/image";
+import Skeleton from "react-loading-skeleton";
 
 const Post = ({ data }) => {
-  const {
-    id,
-    imageSrc,
-    caption,
-    likes,
-    comments,
-    dateCreated,
-    user_id,
-    userData: { username, fullName, auth_id },
-  } = data;
+  const { id, imageSrc, caption, likes, comments, dateCreated, user_id } = data;
 
+  const [userData, setUserData] = useState(null);
   const [realtimeComments, setRealtimeComments] = useState(comments);
   const [exists, setExists] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const {
+    state: { user },
+  } = useContext(GlobalContext);
 
   const commentInput = useRef(null);
   const handleFocus = () => commentInput.current.focus();
@@ -39,16 +40,42 @@ const Post = ({ data }) => {
     return () => un();
   }, []);
 
+  useEffect(() => {
+    const getUserData = async () => {
+      const userRef = doc(db, "users", user_id);
+      const res = await getDoc(userRef);
+
+      let hasLiked = !!likes.find((l) => l === user?.id);
+      setUserData({
+        hasLiked,
+        ...res.data(),
+      });
+    };
+
+    getUserData();
+  }, []);
+
+  let { likesCount, liked, liking, handleToggleLiked } = useLikes({
+    hasLiked: userData?.hasLiked,
+    likesCount: likes.length,
+    postId: id,
+  });
+
+  console.log({ imageLoaded });
+
   return exists ? (
-    <div className="rounded mb-12 border bg-white border-gray-primary">
+    <div className="rounded mb-12 border border-gray-primary bg-white">
       <Header
-        username={username}
-        auth_id={auth_id}
+        fullName={userData?.fullName}
+        auth_id={userData?.auth_id}
         postId={id}
         userId={user_id}
       />
 
-      <div className="relative flex justify-center items-center min-h-[200px] mb-2">
+      <div
+        onDoubleClick={() => handleToggleLiked(user.id)}
+        className="relative flex justify-center items-center min-h-[200px] mb-2"
+      >
         {/* <Image
           src={imageSrc}
           alt={caption}
@@ -60,32 +87,50 @@ const Post = ({ data }) => {
         <img
           src={imageSrc}
           alt={caption}
-          className="mb-3 border-b border-gray-primary"
+          className={`border-b border-gray-primary ${
+            imageLoaded ? "block" : "hidden"
+          }`}
+          style={{ animation: "fade 0.3s ease-in" }}
+          onLoad={(e) => setImageLoaded(true)}
+        />
+        {imageLoaded ? null : (
+          <Skeleton
+            height={350}
+            width={"95%"}
+            containerClassName="w-full flex justify-center p-5"
+            baseColor={"#f5f5f5"}
+          />
+        )}
+      </div>
+
+      <div className="px-3 text-sm">
+        <Actions
+          handleFocus={handleFocus}
+          likes={likesCount}
+          liking={liking}
+          liked={liked}
+          handleToggleLiked={handleToggleLiked}
+          userId={user?.id}
+        />
+
+        <div
+          className={`mb-2 pb-2 ${
+            realtimeComments.length ? "border-b border-gray-light" : ""
+          }`}
+        >
+          <span className="mr-2 font-semibold">{userData?.fullName}</span>
+          <span className="italic">{caption ? caption : "No Caption."}</span>
+        </div>
+
+        <Comments
+          id={id}
+          comments={realtimeComments}
+          dateCreated={dateCreated}
+          commentInput={commentInput}
         />
       </div>
 
-      <Actions
-        id={id}
-        likesCount={likes.length}
-        hasLiked={data.hasLiked}
-        handleFocus={handleFocus}
-      />
-
-      <div
-        className={`mx-6 mb-2 pb-2 ${
-          realtimeComments.length ? "border-b border-gray-light" : ""
-        }`}
-      >
-        <span className="mr-2 font-semibold">{fullName}</span>
-        <span className="italic">{caption ? caption : "No Caption."}</span>
-      </div>
-
-      <Comments
-        id={id}
-        comments={realtimeComments}
-        dateCreated={dateCreated}
-        commentInput={commentInput}
-      />
+      {user ? <AddComment id={id} commentInput={commentInput} /> : null}
     </div>
   ) : null;
 };

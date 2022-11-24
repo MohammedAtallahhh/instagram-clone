@@ -1,51 +1,33 @@
-import React, { useContext, useEffect, useState } from "react";
-
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+import React, { useContext } from "react";
 
 import { GlobalContext } from "../../context/globalContext";
-import { db } from "../../lib/firebase";
 
 import { BsHeart, BsFillHeartFill } from "react-icons/bs";
 import { FaRegCommentDots } from "react-icons/fa";
 import { ImSpinner2 } from "react-icons/im";
 
-const Actions = ({ id, handleFocus, likesCount, hasLiked }) => {
+const Actions = ({
+  userId,
+  handleFocus,
+  likes,
+  liked,
+  liking,
+  handleToggleLiked,
+}) => {
   const {
     state: { user },
   } = useContext(GlobalContext);
 
-  const [liked, setLiked] = useState(null);
-  const [liking, setLiking] = useState(false);
-  const [likes, setLikes] = useState(null);
-
-  useEffect(() => {
-    setLiked(hasLiked);
-    setLikes(likesCount);
-  }, [hasLiked, likesCount]);
-
-  const handleToggleLiked = async () => {
-    setLiking(true);
-    setLiked((liked) => !liked);
-
-    const postRef = doc(db, "posts", id);
-    await updateDoc(postRef, {
-      likes: liked ? arrayRemove(user.id) : arrayUnion(user.id),
-    });
-
-    setLikes((likes) => (liked ? likes - 1 : likes + 1));
-    setLiking(false);
-  };
-
   return (
-    <div className="px-3">
+    <div>
       {user ? (
         <div className="flex items-center gap-4 py-2">
           <button
             name="like"
-            onClick={handleToggleLiked}
+            onClick={() => handleToggleLiked(userId)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
-                handleToggleLiked();
+                handleToggleLiked(userId);
               }
             }}
             disabled={liking}
@@ -73,7 +55,7 @@ const Actions = ({ id, handleFocus, likesCount, hasLiked }) => {
         </div>
       ) : null}
 
-      <div className="py-1">
+      <div className="pb-2">
         <p className="font-medium">
           {likes === 1 ? `${likes} like` : `${likes} likes`}
         </p>

@@ -65,12 +65,12 @@ const Comments = ({ id, comments, dateCreated, commentInput }) => {
   return (
     <>
       {comments.length ? (
-        <div className="p-4 pt-1 pb-4">
+        <div className="pl-2">
           {/* Comments */}
           {commentsData
             ?.slice(0, commentsSlice)
             .map(({ id, content, userData, dateCreated }, i) => (
-              <div key={i + userData.auth_id} className="mb-2">
+              <div key={i + userData.auth_id} className="mb-4">
                 {/* Comment */}
                 <div className="flex">
                   <Link href={`/p/${userData.auth_id}`}>
@@ -78,7 +78,7 @@ const Comments = ({ id, comments, dateCreated, commentInput }) => {
                       {userData.fullName}
                     </h4>
                   </Link>
-                  <p>{content}</p>
+                  <p className="text-gray-text">{content}</p>
                 </div>
 
                 {/* Comment footer */}
@@ -89,7 +89,7 @@ const Comments = ({ id, comments, dateCreated, commentInput }) => {
 
                   {userData.id === user?.id ? (
                     <button
-                      className="text-red-base"
+                      className="text-red-primary"
                       onClick={() => handleDeleteComment(id)}
                     >
                       delete
@@ -124,8 +124,6 @@ const Comments = ({ id, comments, dateCreated, commentInput }) => {
       <p className="date text-gray-base uppercase text-[0.7rem] p-3 pt-0">
         {formatDistance(dateCreated.seconds * 1000, new Date())} ago
       </p>
-
-      {user ? <AddComment id={id} commentInput={commentInput} /> : null}
     </>
   );
 };

@@ -10,6 +10,7 @@ import { GlobalContext } from "../context/globalContext";
 
 const Timeline = () => {
   const [posts, setPosts] = useState(null);
+
   const {
     state: { user },
   } = useContext(GlobalContext);
@@ -20,26 +21,26 @@ const Timeline = () => {
     const q = query(collection(db, "posts"));
     const res = await getDocs(q);
 
-    console.log(res.docs.map((d) => d.data()));
+    const data = res.docs
+      .map((d) => d.data())
+      .sort((a, b) => b.dateCreated - a.dateCreated);
 
-    let postsData = await Promise.all(
-      res.docs.map(async (post) => {
-        const userRef = doc(db, "users", post.data().user_id);
-        const res = await getDoc(userRef);
+    // let postsData = await Promise.all(
+    //   res.docs.map(async (post) => {
+    //     const userRef = doc(db, "users", post.data().user_id);
+    //     const res = await getDoc(userRef);
 
-        let hasLiked = !!post.data().likes.find((l) => l === user?.id);
-        return {
-          id: post.id,
-          ...post.data(),
-          hasLiked,
-          userData: res.data(),
-        };
-      })
-    );
+    //     let hasLiked = !!post.data().likes.find((l) => l === user?.id);
+    //     return {
+    //       id: post.id,
+    //       ...post.data(),
+    //       hasLiked,
+    //       userData: res.data(),
+    //     };
+    //   })
+    // );
 
-    postsData = postsData.sort((a, b) => b.dateCreated - a.dateCreated);
-
-    setPosts(postsData);
+    setPosts(data);
   };
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const Timeline = () => {
   // }, [posts]);
 
   return (
-    <div className="flex justify-center w-full max-w-[500px]">
+    <div className="w-[100%] lg:w-[60%] max-w-[400px] mx-auto flex justify-center">
       {!posts ? (
         <Skeleton
           count={3}
