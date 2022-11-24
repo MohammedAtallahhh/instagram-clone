@@ -34,6 +34,7 @@ const Header = ({ postId, userId, fullName, auth_id }) => {
       {userId === user?.id ? (
         <div>
           <button
+            name="delete post"
             className="bg-red-primary font-medium rounded-full text-white p-2"
             onClick={handleDeletePost}
           >

@@ -23,7 +23,7 @@ const Actions = ({
       {user ? (
         <div className="flex items-center gap-4 py-2">
           <button
-            name="like"
+            name="like post"
             onClick={() => handleToggleLiked(userId)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
@@ -42,7 +42,7 @@ const Actions = ({
           </button>
 
           <button
-            name="comment"
+            name="add comment to post"
             onClick={handleFocus}
             onKeyDown={(event) => {
               if (event.key === "Enter") {

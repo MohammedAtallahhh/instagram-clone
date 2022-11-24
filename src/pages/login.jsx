@@ -11,6 +11,7 @@ import { auth } from "../lib/firebase";
 import { GlobalContext } from "../context/globalContext";
 import { actions } from "../context/actions";
 import { getUserByAuthId } from "../herlpers/firebase";
+import Skeleton from "react-loading-skeleton";
 
 const classes = {
   container:
@@ -32,7 +33,10 @@ const Login = () => {
 
   const isInvalid = password === "" || emailAddress === "";
 
-  const { state, dispatch } = useContext(GlobalContext);
+  const {
+    state: { user },
+    dispatch,
+  } = useContext(GlobalContext);
   const router = useRouter();
 
   const handleLogin = async (event) => {
@@ -48,7 +52,6 @@ const Login = () => {
       const userData = await getUserByAuthId(user.uid);
 
       dispatch({ type: actions.LOGIN, payload: userData });
-
       router.push("/");
     } catch (error) {
       setEmailAddress("");
@@ -58,10 +61,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (state.user && router.pathname !== "/") {
+    if (user && router.pathname !== "/") {
       router.push("/");
     }
-  }, [state.user, router]);
+  }, [user, router]);
 
   const { container, formLogo, input, submitButton, formFooter } = classes;
 
@@ -72,63 +75,70 @@ const Login = () => {
         <title>Login</title>
       </Head>
 
-      <div className={container}>
-        {/* Login image */}
-        <div className="flex max-w-[250px] lg:max-w-[350px]">
-          <img src="/images/login-photo.png" alt="iPhone with Instagram app" />
-        </div>
-
-        {/* Login form */}
-        <div className="flex flex-col max-w-[330px]">
-          <div className={formLogo}>
-            <h1 className="flex justify-center w-full">
-              <img
-                src="/images/logo.png"
-                alt="Instagram"
-                className="mt-2 w-6/12 mb-4"
-              />
-            </h1>
-
-            {error && <p className="mb-4 text-xs text-red-primary">{error}</p>}
-
-            <form onSubmit={handleLogin} method="POST">
-              <input
-                aria-label="Enter your email address"
-                type="text"
-                placeholder="Email address"
-                onChange={({ target }) => setEmailAddress(target.value)}
-                value={emailAddress}
-                className={input}
-              />
-              <input
-                aria-label="Enter your password"
-                type="password"
-                placeholder="Password"
-                onChange={({ target }) => setPassword(target.value)}
-                value={password}
-                className={input}
-              />
-              <button
-                disabled={isInvalid}
-                type="submit"
-                className={`${submitButton} ${isInvalid && "opacity-50"}`}
-              >
-                Login
-              </button>
-            </form>
+      {!user ? (
+        <div className={container}>
+          {/* Login image */}
+          <div className="flex max-w-[250px] lg:max-w-[350px]">
+            <img
+              src="/images/login-photo.png"
+              alt="iPhone with Instagram app"
+            />
           </div>
 
-          {/* Form footer */}
-          <footer className={formFooter}>
-            <p className="text-sm">
-              Don't have an account? {/* Sign up link */}
-              <Link href="/sign-up" className="font-bold text-blue-medium">
-                Sign up
-              </Link>
-            </p>
-          </footer>
+          {/* Login form */}
+          <div className="flex flex-col max-w-[330px]">
+            <div className={formLogo}>
+              <h1 className="flex justify-center w-full">
+                <img
+                  src="/images/logo.png"
+                  alt="Instagram"
+                  className="mt-2 w-6/12 mb-4"
+                />
+              </h1>
+
+              {error && (
+                <p className="mb-4 text-xs text-red-primary">{error}</p>
+              )}
+
+              <form onSubmit={handleLogin} method="POST">
+                <input
+                  aria-label="Enter your email address"
+                  type="text"
+                  placeholder="Email address"
+                  onChange={({ target }) => setEmailAddress(target.value)}
+                  value={emailAddress}
+                  className={input}
+                />
+                <input
+                  aria-label="Enter your password"
+                  type="password"
+                  placeholder="Password"
+                  onChange={({ target }) => setPassword(target.value)}
+                  value={password}
+                  className={input}
+                />
+                <button
+                  disabled={isInvalid}
+                  type="submit"
+                  className={`${submitButton} ${isInvalid && "opacity-50"}`}
+                >
+                  Login
+                </button>
+              </form>
+            </div>
+
+            {/* Form footer */}
+            <footer className={formFooter}>
+              <p className="text-sm">
+                Don't have an account? {/* Sign up link */}
+                <Link href="/sign-up" className="font-bold text-blue-medium">
+                  Sign up
+                </Link>
+              </p>
+            </footer>
+          </div>
         </div>
-      </div>
+      ) : null}
     </>
   );
 };

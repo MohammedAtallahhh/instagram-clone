@@ -52,13 +52,13 @@ const AddComment = ({ id, commentInput }) => {
           ref={commentInput}
         />
         <button
+          name="add comment"
+          type="button"
           className={`text-sm font-bold text-blue-medium ${
             !comment && "opacity-25"
           }`}
-          type="button"
           disabled={comment.length < 1}
           onClick={handleSubmitComment}
-          name="add-comment"
         >
           Post
         </button>

@@ -137,7 +137,7 @@ const AddPost = () => {
 
   return (
     <>
-      <button name="add-post" onClick={() => setShowModal(true)}>
+      <button name="add post" onClick={() => setShowModal(true)}>
         <CgAddR size={32} />
       </button>
       {showModal ? (

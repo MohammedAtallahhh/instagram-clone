@@ -19,7 +19,6 @@ const Post = ({ data }) => {
   const [userData, setUserData] = useState(null);
   const [realtimeComments, setRealtimeComments] = useState(comments);
   const [exists, setExists] = useState(true);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   const {
     state: { user },
@@ -61,8 +60,6 @@ const Post = ({ data }) => {
     postId: id,
   });
 
-  console.log({ imageLoaded });
-
   return exists ? (
     <div className="rounded mb-12 border border-gray-primary bg-white">
       <Header
@@ -87,20 +84,9 @@ const Post = ({ data }) => {
         <img
           src={imageSrc}
           alt={caption}
-          className={`border-b border-gray-primary ${
-            imageLoaded ? "block" : "hidden"
-          }`}
+          className={`border-b border-gray-primary`}
           style={{ animation: "fade 0.3s ease-in" }}
-          onLoad={(e) => setImageLoaded(true)}
         />
-        {imageLoaded ? null : (
-          <Skeleton
-            height={350}
-            width={"95%"}
-            containerClassName="w-full flex justify-center p-5"
-            baseColor={"#f5f5f5"}
-          />
-        )}
       </div>
 
       <div className="px-3 text-sm">
