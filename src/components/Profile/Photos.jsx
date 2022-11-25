@@ -23,23 +23,26 @@ const Photos = ({ posts }) => {
               ))
           : posts.length
           ? posts.map((photo) => (
-              <Link key={photo.id} href={`/post/${photo.id}`}>
-                <div className="relative max-w-[320px] group cursor-pointer">
-                  <img src={photo.imageSrc} alt={photo.caption} />
+              // <Link key={photo.id} href={`/post/${photo.id}`}>
+              <div
+                key={photo.id}
+                className="relative flex justify-center items-center w-full max-w-[320px] group"
+              >
+                <img src={photo.imageSrc} alt={photo.caption} />
 
-                  <div className="absolute inset-0 z-10 w-full flex justify-evenly items-center bg-black-faded invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all">
-                    <p className="flex items-center gap-1 text-white font-bold">
-                      <BsFillHeartFill size={24} color="#ed4956" />
-                      {photo.likes.length}
-                    </p>
+                <div className="absolute inset-0 z-10 w-full flex justify-evenly items-center bg-black-faded invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all">
+                  <p className="flex items-center gap-1 text-white font-bold">
+                    <BsFillHeartFill size={24} color="#ed4956" />
+                    {photo.likes.length}
+                  </p>
 
-                    <p className="flex items-center gap-1 text-white font-bold">
-                      <FaCommentDots size={24} color="#eee" />
-                      {photo.comments.length}
-                    </p>
-                  </div>
+                  <p className="flex items-center gap-1 text-white font-bold">
+                    <FaCommentDots size={24} color="#eee" />
+                    {photo.comments.length}
+                  </p>
                 </div>
-              </Link>
+              </div>
+              // </Link>
             ))
           : null}
       </div>

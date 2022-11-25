@@ -12,6 +12,7 @@ import { db } from "../lib/firebase";
 export const useLikes = ({ postId, userId, likes }) => {
   const [realtimeLikes, setRealtimeLikes] = useState(likes);
   const [liking, setLiking] = useState(false);
+  const [exists, setExists] = useState(true);
 
   useEffect(() => {
     const un = onSnapshot(doc(db, "posts", postId), (newPost) => {
@@ -42,5 +43,5 @@ export const useLikes = ({ postId, userId, likes }) => {
     setLiking(false);
   };
 
-  return { handleToggleLiked, liking, realtimeLikes };
+  return { handleToggleLiked, liking, realtimeLikes, exists };
 };

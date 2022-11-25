@@ -14,7 +14,7 @@ const Timeline = ({ posts }) => {
   const following = user?.following;
 
   return (
-    <div className="w-[100%] lg:w-[60%] max-w-[400px] mx-auto flex justify-center">
+    <div className="w-[100%] lg:w-[60%] max-w-[500px] mx-auto flex justify-center">
       {!posts ? (
         <Skeleton
           count={3}

@@ -61,7 +61,7 @@ const Post = ({ data }) => {
   });
 
   return exists ? (
-    <div className="rounded mb-12 border border-gray-primary bg-white">
+    <div className="rounded mb-12 border border-gray-primary bg-white shadow-md">
       <Header
         fullName={userData?.fullName}
         postId={id}
@@ -107,15 +107,17 @@ const Post = ({ data }) => {
           <Link href={`/p/${user_id}`} className="mr-2 font-semibold">
             {userData?.fullName}
           </Link>
-          <span className="italic">{caption ? caption : "No Caption."}</span>
+          <span>{caption ? caption : "No Caption."}</span>
         </div>
 
-        <Comments
-          id={id}
-          comments={realtimeComments}
-          dateCreated={dateCreated}
-          commentInput={commentInput}
-        />
+        <div className="max-h-[300px] overflow-auto no-scrollbar">
+          <Comments
+            id={id}
+            comments={realtimeComments}
+            dateCreated={dateCreated}
+            commentInput={commentInput}
+          />
+        </div>
       </div>
 
       {user ? <AddComment id={id} commentInput={commentInput} /> : null}

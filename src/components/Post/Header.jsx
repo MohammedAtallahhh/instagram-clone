@@ -26,7 +26,7 @@ const Header = ({ postId, userId, userImage, fullName, imageSrc }) => {
   };
 
   return (
-    <div className="flex justify-between items-center border-b border-gray-primary py-3 px-4 text-sm">
+    <div className="flex justify-between items-center border-b border-gray-primary p-2 text-sm">
       <div className="flex items-center">
         <Link href={`/p/${userId}`} className="flex items-center">
           <img
@@ -45,7 +45,7 @@ const Header = ({ postId, userId, userImage, fullName, imageSrc }) => {
             className="bg-red-primary font-medium rounded-full text-white p-2"
             onClick={handleDeletePost}
           >
-            <RiDeleteBin7Line size={20} />
+            <RiDeleteBin7Line size={16} />
           </button>
         </div>
       ) : null}

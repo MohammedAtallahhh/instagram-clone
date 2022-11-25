@@ -3,6 +3,7 @@ import { formatDistance } from "date-fns";
 import { arrayRemove, doc, getDoc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { DEFAULT_IMAGE_PATH } from "../../constants";
 import { GlobalContext } from "../../context/globalContext";
 import { db } from "../../lib/firebase";
@@ -31,9 +32,13 @@ const Comments = ({ id, comments, dateCreated }) => {
   const handleDeleteComment = async (commentId) => {
     const postRef = doc(db, "posts", id);
 
-    await updateDoc(postRef, {
-      comments: comments.filter((c) => c.id !== commentId),
-    });
+    try {
+      await updateDoc(postRef, {
+        comments: comments.filter((c) => c.id !== commentId),
+      });
+    } catch (err) {
+      return toast.error(err.message);
+    }
   };
 
   useEffect(() => {
@@ -82,13 +87,16 @@ const Comments = ({ id, comments, dateCreated }) => {
                 </div>
 
                 <div>
-                  <div className="flex gap-2 mb-1">
+                  <div>
                     <Link href={`/p/${userData.id}`} className="flex-shrink-0">
-                      <h4 className="text-gray-text font-semibold">
+                      <h4 className="text-gray-text font-semibold mr-2 inline">
                         {userData.fullName}
                       </h4>
                     </Link>
-                    <p className="text-gray-text flex-shrink">{content}</p>
+
+                    <p className="text-gray-text flex-shrink inline">
+                      {content}
+                    </p>
                   </div>
 
                   {/* Comment footer */}

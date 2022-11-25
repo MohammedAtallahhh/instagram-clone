@@ -176,6 +176,7 @@ const AddPost = () => {
                   id="photo"
                   className="hidden"
                   multiple={false}
+                  accept="image/png, image/gif, image/jpeg"
                 />
               </>
             ) : (

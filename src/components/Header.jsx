@@ -13,14 +13,15 @@ import { actions } from "../context/actions";
 import { AiOutlineHome } from "react-icons/ai";
 import AddPost from "./AddPost";
 import Skeleton from "react-loading-skeleton";
+import { IoMdExit } from "react-icons/io";
 
 const classes = {
   header: "h-16 bg-white border-b border-gray-primary mb-8",
   contianer:
     "w-[90%] max-w-[1000px] flex justify-between items-center mx-auto h-full",
-  logo: "items-center align-items cursor-pointer hidden md:flex",
+  logo: "items-center align-items cursor-pointer hidden sm:flex",
   navActions:
-    "text-3xl flex items-center justify-center gap-5 w-full md:gap-5 md:w-[unset]",
+    "text-4xl flex items-center justify-center gap-8 sm:gap-5 w-full sm:w-[unset]",
   loginButton: "bg-blue-medium font-bold text-sm rounded text-white px-5 py-2",
   signUpButton: "font-bold text-sm rounded text-blue-medium px-5 py-2",
 };
@@ -67,7 +68,7 @@ const Header = () => {
               <AddPost />
 
               {/* User icon */}
-              <div className="flex items-center cursor-pointer w-10 h-10 md:w-9 md:h-9">
+              <div className="flex items-center cursor-pointer w-11 h-11">
                 <Link href={`/p/${user?.id}`} className="h-full w-full">
                   {" "}
                   <img
@@ -83,7 +84,7 @@ const Header = () => {
                 type="button"
                 name="sign-out"
                 title="Sign Out"
-                className={`${loginButton} bg-red-primary`}
+                className="bg-red-primary text-white p-2 rounded-full"
                 onClick={handleSignOut}
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
@@ -91,22 +92,22 @@ const Header = () => {
                   }
                 }}
               >
-                Sign out
+                <IoMdExit size={24} />
               </button>
             </>
           ) : (
-            <>
-              <Link href="/login">
+            <div className="flex">
+              <Link href="/login" className="flex">
                 <button type="button" name="login" className={loginButton}>
                   Log In
                 </button>
               </Link>
-              <Link href="/sign-up">
+              <Link href="/sign-up" className="flex">
                 <button type="button" name="sign-up" className={signUpButton}>
                   Sign Up
                 </button>
               </Link>
-            </>
+            </div>
           )}
         </div>
       </div>

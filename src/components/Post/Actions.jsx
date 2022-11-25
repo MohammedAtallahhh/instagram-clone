@@ -55,8 +55,8 @@ const Actions = ({
         </div>
       ) : null}
 
-      <div className="pb-2">
-        <p className="font-medium">
+      <div className="pb-3">
+        <p className="font-medium text-[1.05rem]">
           {likes === 1 ? `${likes} like` : `${likes} likes`}
         </p>
       </div>
