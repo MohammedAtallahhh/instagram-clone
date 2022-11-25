@@ -11,14 +11,26 @@ import {
   query,
 } from "firebase/firestore";
 
-import { Profile } from "../../components";
+import { ProfileHeader, ProfilePhotos } from "../../components";
 
 import { db } from "../../lib/firebase";
+import { getPostsByUserId } from "../../herlpers/firebase";
 
 const UserPage = ({ userData }) => {
   const [user, setUser] = useState(userData);
+  const [posts, setPosts] = useState(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const postsData = await getPostsByUserId(user.id);
+
+      setPosts(postsData);
+    };
+
+    fetchPosts();
+  }, [user.id]);
 
   useEffect(() => {
     if (userData) {
@@ -41,7 +53,8 @@ const UserPage = ({ userData }) => {
         <title>{user.fullName}</title>
       </Head>
       <div className="w-[90%] max-w-[800px] mx-auto">
-        <Profile user={user} />
+        <ProfileHeader user={user} posts={posts} />
+        <ProfilePhotos posts={posts} />
       </div>
     </>
   ) : null;

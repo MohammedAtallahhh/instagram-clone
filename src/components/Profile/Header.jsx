@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useContext, useEffect, useState } from "react";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 
 import { GlobalContext } from "../../context/globalContext";
 import { DEFAULT_IMAGE_PATH } from "../../constants";
@@ -78,7 +78,6 @@ const ProfileHeader = ({ user, posts }) => {
     } finally {
       setFile("");
       setUploading(false);
-      // router.reload(window.location.pathname);
     }
   };
 

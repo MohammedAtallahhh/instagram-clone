@@ -33,7 +33,7 @@ const Actions = ({
             disabled={liking}
           >
             {liking ? (
-              <ImSpinner2 size={26} className="text-red-primary" />
+              <ImSpinner2 size={26} className="text-red-primary animate-spin" />
             ) : liked === false ? (
               <BsHeart size={26} />
             ) : (

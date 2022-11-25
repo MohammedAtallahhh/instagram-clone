@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import { formatDistance } from "date-fns";
 import { arrayRemove, doc, getDoc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
+import { DEFAULT_IMAGE_PATH } from "../../constants";
 import { GlobalContext } from "../../context/globalContext";
 import { db } from "../../lib/firebase";
-import AddComment from "./AddComment";
 
 const Comments = ({ id, comments, dateCreated }) => {
   const [commentsData, setCommentsData] = useState(null);
@@ -70,31 +71,42 @@ const Comments = ({ id, comments, dateCreated }) => {
           {commentsData
             ?.slice(0, commentsSlice)
             .map(({ id, content, userData, dateCreated }, i) => (
-              <div key={i + userData.auth_id} className="mb-4">
+              <div key={i + userData.auth_id} className="mb-4 flex gap-3">
                 {/* Comment */}
-                <div className="flex">
-                  <Link href={`/p/${userData.id}`}>
-                    <h4 className="text-gray-text font-semibold mr-2">
-                      {userData.fullName}
-                    </h4>
-                  </Link>
-                  <p className="text-gray-text">{content}</p>
+                <div className="w-8 h-8 flex-shrink-0">
+                  <img
+                    src={userData.profilePicture ?? DEFAULT_IMAGE_PATH}
+                    alt={userData.fullName}
+                    className="w-full h-full rounded-full object-cover"
+                  />
                 </div>
 
-                {/* Comment footer */}
-                <div className="text-xs text-gray-base">
-                  <span className="mr-3">
-                    {formatDistance(dateCreated.seconds * 1000, new Date())} ago
-                  </span>
+                <div>
+                  <div className="flex gap-2 mb-1">
+                    <Link href={`/p/${userData.id}`} className="flex-shrink-0">
+                      <h4 className="text-gray-text font-semibold">
+                        {userData.fullName}
+                      </h4>
+                    </Link>
+                    <p className="text-gray-text flex-shrink">{content}</p>
+                  </div>
 
-                  {userData.id === user?.id ? (
-                    <button
-                      className="text-red-primary"
-                      onClick={() => handleDeleteComment(id)}
-                    >
-                      delete
-                    </button>
-                  ) : null}
+                  {/* Comment footer */}
+                  <div className="text-xs text-gray-base">
+                    <span className="mr-3">
+                      {formatDistance(dateCreated.seconds * 1000, new Date())}{" "}
+                      ago
+                    </span>
+
+                    {userData.id === user?.id ? (
+                      <button
+                        className="text-red-primary"
+                        onClick={() => handleDeleteComment(id)}
+                      >
+                        delete
+                      </button>
+                    ) : null}
+                  </div>
                 </div>
               </div>
             ))}

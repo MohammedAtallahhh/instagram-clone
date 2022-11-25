@@ -11,7 +11,6 @@ import AddComment from "./AddComment";
 import { GlobalContext } from "../../context/globalContext";
 import { useLikes } from "../../hooks/useLikes";
 import { db } from "../../lib/firebase";
-import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 
 const Post = ({ data }) => {
@@ -55,10 +54,10 @@ const Post = ({ data }) => {
     getUserData();
   }, []);
 
-  let { likesCount, liked, liking, handleToggleLiked } = useLikes({
-    hasLiked: userData?.hasLiked,
-    likesCount: likes.length,
+  const { realtimeLikes, liking, handleToggleLiked } = useLikes({
+    likes,
     postId: id,
+    userId: user?.id,
   });
 
   return exists ? (
@@ -94,15 +93,14 @@ const Post = ({ data }) => {
       <div className="px-3 text-sm">
         <Actions
           handleFocus={handleFocus}
-          likes={likesCount}
+          likes={realtimeLikes.length}
           liking={liking}
-          liked={liked}
+          liked={realtimeLikes.includes(user?.id)}
           handleToggleLiked={handleToggleLiked}
           userId={user?.id}
         />
-
         <div
-          className={`mb-2 pb-2 ${
+          className={`mb-4 pb-2 ${
             realtimeComments.length ? "border-b border-gray-light" : ""
           }`}
         >

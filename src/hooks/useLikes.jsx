@@ -1,30 +1,46 @@
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../lib/firebase";
 
-export const useLikes = ({ hasLiked, likesCount, userId, postId }) => {
-  const [liked, setLiked] = useState(null);
+export const useLikes = ({ postId, userId, likes }) => {
+  const [realtimeLikes, setRealtimeLikes] = useState(likes);
   const [liking, setLiking] = useState(false);
-  const [likes, setLikes] = useState(null);
 
-  const handleToggleLiked = async (id) => {
-    if (!id) return;
-    setLiking(true);
-    setLiked((liked) => !liked);
-
-    const postRef = doc(db, "posts", postId);
-    await updateDoc(postRef, {
-      likes: liked ? arrayRemove(id) : arrayUnion(id),
+  useEffect(() => {
+    const un = onSnapshot(doc(db, "posts", postId), (newPost) => {
+      if (!newPost.exists()) {
+        setExists(false);
+        return;
+      }
+      setRealtimeLikes(newPost.data().likes);
     });
 
-    setLikes((likes) => (liked ? likes - 1 : likes + 1));
+    return () => un();
+  }, []);
+
+  const handleToggleLiked = async () => {
+    if (!userId) return;
+
+    setLiking(true);
+
+    const postRef = doc(db, "posts", postId);
+    const res = await getDoc(postRef);
+
+    const liked = res.data().likes.find((l) => l === userId);
+
+    await updateDoc(postRef, {
+      likes: liked ? arrayRemove(userId) : arrayUnion(userId),
+    });
+
     setLiking(false);
   };
 
-  useEffect(() => {
-    setLiked(hasLiked);
-    setLikes(likesCount);
-  }, [hasLiked, likesCount]);
-
-  return { likesCount: likes, liking, liked, handleToggleLiked };
+  return { handleToggleLiked, liking, realtimeLikes };
 };

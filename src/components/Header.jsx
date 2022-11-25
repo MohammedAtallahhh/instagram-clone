@@ -16,12 +16,13 @@ import Skeleton from "react-loading-skeleton";
 
 const classes = {
   header: "h-16 bg-white border-b border-gray-primary mb-8",
-  contianer: "w-[90%] max-w-[1000px] mx-auto h-full",
+  contianer:
+    "w-[90%] max-w-[1000px] flex justify-between items-center mx-auto h-full",
   logo: "items-center align-items cursor-pointer hidden md:flex",
   navActions:
-    "text-4xl flex items-center justify-center gap-8 w-full md:gap-5 md:w-[unset] md:text-3xl",
-  loginButton: "bg-blue-medium font-bold text-sm rounded text-white w-20 h-8",
-  signUpButton: "font-bold text-sm rounded text-blue-medium w-20 h-8",
+    "text-3xl flex items-center justify-center gap-5 w-full md:gap-5 md:w-[unset]",
+  loginButton: "bg-blue-medium font-bold text-sm rounded text-white px-5 py-2",
+  signUpButton: "font-bold text-sm rounded text-blue-medium px-5 py-2",
 };
 
 const Header = () => {
@@ -41,74 +42,72 @@ const Header = () => {
   return (
     <header className={header}>
       <div className={contianer}>
-        <div className="flex justify-between h-full">
-          {/* Logo */}
-          <div className={logo}>
-            <Link href="/" aria-label="Instagram logo">
-              <img
-                src="/images/logo.png"
-                alt="Instagram"
-                className="mt-2 w-6/12"
-              />
-            </Link>
-          </div>
+        {/* Logo */}
+        <div className={logo}>
+          <Link href="/" aria-label="Instagram logo">
+            <img
+              src="/images/logo.png"
+              alt="Instagram"
+              className="mt-2 w-6/12"
+            />
+          </Link>
+        </div>
 
-          <div className={navActions}>
-            {user === null ? (
-              <Skeleton height={40} width={150} />
-            ) : user ? (
-              <>
-                {/* Home icon */}
-                <Link href="/" aria-label="Dashboard">
-                  <AiOutlineHome />
+        <div className={navActions}>
+          {user === null ? (
+            <Skeleton height={40} width={150} />
+          ) : user ? (
+            <>
+              {/* Home icon */}
+              <Link href="/" aria-label="Dashboard">
+                <AiOutlineHome />
+              </Link>
+
+              {/* Add post button */}
+              <AddPost />
+
+              {/* User icon */}
+              <div className="flex items-center cursor-pointer w-10 h-10 md:w-9 md:h-9">
+                <Link href={`/p/${user?.id}`} className="h-full w-full">
+                  {" "}
+                  <img
+                    className="rounded-full w-full h-full border border-gray-light object-cover"
+                    src={user?.profilePicture ?? DEFAULT_IMAGE_PATH}
+                    alt={`${user?.username} profile`}
+                  />
                 </Link>
+              </div>
 
-                {/* Add post button */}
-                <AddPost />
-
-                {/* User icon */}
-                <div className="flex items-center cursor-pointer w-10 h-10 md:w-9 md:h-9">
-                  <Link href={`/p/${user?.id}`} className="h-full w-full">
-                    {" "}
-                    <img
-                      className="rounded-full w-full h-full border border-gray-light object-cover"
-                      src={user?.profilePicture ?? DEFAULT_IMAGE_PATH}
-                      alt={`${user?.username} profile`}
-                    />
-                  </Link>
-                </div>
-
-                {/* Logout button */}
-                <button
-                  type="button"
-                  name="sign-out"
-                  title="Sign Out"
-                  className={`${loginButton} bg-red-primary`}
-                  onClick={handleSignOut}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      handleSignOut();
-                    }
-                  }}
-                >
-                  Sign out
+              {/* Logout button */}
+              <button
+                type="button"
+                name="sign-out"
+                title="Sign Out"
+                className={`${loginButton} bg-red-primary`}
+                onClick={handleSignOut}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    handleSignOut();
+                  }
+                }}
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login">
+                <button type="button" name="login" className={loginButton}>
+                  Log In
                 </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login">
-                  <button type="button" name="login" className={loginButton}>
-                    Log In
-                  </button>
-                </Link>
-                <Link href="/sign-up" className="hidden md:inline-block">
-                  <button type="button" name="sign-up" className={signUpButton}>
-                    Sign Up
-                  </button>
-                </Link>
-              </>
-            )}
-          </div>
+              </Link>
+              <Link href="/sign-up">
+                <button type="button" name="sign-up" className={signUpButton}>
+                  Sign Up
+                </button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

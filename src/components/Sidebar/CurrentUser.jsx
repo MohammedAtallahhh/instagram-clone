@@ -17,9 +17,9 @@ const CurrentUser = () => {
   return (
     <Link
       href={`/p/${id}`}
-      className="grid grid-cols-4 gap-4 mb-3 pb-3 items-center border-b border-gray-light"
+      className="flex gap-4 mb-3 pb-3 items-center border-b border-gray-light"
     >
-      <div className="flex items-center justify-between col-span-1">
+      <div className="flex items-center justify-between flex-shrink-0">
         <img
           className="rounded-full w-14 h-14 object-cover flex mr-3"
           src={user?.profilePicture ?? DEFAULT_IMAGE_PATH}
