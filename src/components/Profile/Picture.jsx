@@ -10,6 +10,7 @@ import Skeleton from "react-loading-skeleton";
 import { DEFAULT_IMAGE_PATH } from "../../constants";
 import { db, storage } from "../../lib/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import Image from "next/image";
 
 const Picture = ({ id, currentUserId, fullName, profilePicture }) => {
   const [file, setFile] = useState(null);
@@ -80,13 +81,14 @@ const Picture = ({ id, currentUserId, fullName, profilePicture }) => {
   }, [file]);
 
   return (
-    <div className="flex relative w-16 h-16 md:w-20 md:h-20 lg:h-36 lg:w-36">
+    <div className="relative flex flex-shrink-0 w-16 h-16 sm:w-24 sm:h-24 md:h-36 md:w-36">
       {uploading ? (
         <Skeleton containerClassName="w-full h-full" height={"100%"} circle />
       ) : (
         <>
-          <img
-            className="object-cover w-full rounded-full"
+          <Image
+            className="object-cover w-full rounded-full !relative"
+            fill
             alt={`${fullName} profile picture`}
             src={profilePicture ?? DEFAULT_IMAGE_PATH}
           />
@@ -98,10 +100,10 @@ const Picture = ({ id, currentUserId, fullName, profilePicture }) => {
                   htmlFor="profilePicture"
                   className="absolute inset-0 bottom-[-20%] flex justify-center items-end text-xs text-center text-gray-base cursor-pointer"
                 >
-                  <span className="hidden lg:inline-block">
+                  <span className="hidden md:inline-block">
                     Change profile picture
                   </span>
-                  <span className="inline-block lg:hidden">Change</span>
+                  <span className="inline-block md:hidden">Change</span>
                 </label>
 
                 <input

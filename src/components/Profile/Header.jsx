@@ -15,7 +15,7 @@ const ProfileHeader = ({ user, posts }) => {
   } = useContext(GlobalContext);
 
   return (
-    <div className="flex justify-center gap-5 md:gap-10 lg:gap-20 border-b border-gray-light pb-24">
+    <div className="flex justify-center gap-5 pb-24 border-b sm:gap-10 lg:gap-20 border-gray-light">
       {/* Header image */}
       <Picture
         fullName={fullName}
@@ -25,10 +25,10 @@ const ProfileHeader = ({ user, posts }) => {
       />
 
       {/* Header info */}
-      <div className="flex flex-col lg:pt-5">
-        <div className="container flex items-center">
+      <div className="flex flex-col md:pt-5">
+        <div className="container flex items-center lg:mb-3">
           {/* Username */}
-          <h2 className="text-2xl lg:text-3xl text-gray-text font-normal mr-5">
+          <h2 className="mr-5 text-2xl font-normal sm:text-3xl lg:text-4xl text-gray-text">
             {username}
           </h2>
 

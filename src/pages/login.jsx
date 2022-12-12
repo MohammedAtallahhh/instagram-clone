@@ -12,6 +12,8 @@ import { GlobalContext } from "../context/globalContext";
 import { actions } from "../context/actions";
 import { getUserByAuthId } from "../herlpers/firebase";
 import Skeleton from "react-loading-skeleton";
+import { toast } from "react-hot-toast";
+import { AnimatePage } from "../components";
 
 const classes = {
   container:
@@ -29,7 +31,6 @@ const classes = {
 const Login = () => {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const isInvalid = password === "" || emailAddress === "";
 
@@ -49,14 +50,16 @@ const Login = () => {
         password
       );
 
+      console.log({ user });
       const userData = await getUserByAuthId(user.uid);
 
       dispatch({ type: actions.LOGIN, payload: userData });
       router.push("/");
+      //
     } catch (error) {
       setEmailAddress("");
       setPassword("");
-      setError(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -74,8 +77,8 @@ const Login = () => {
       <Head>
         <title>Login</title>
       </Head>
-
-      {!user ? (
+      <AnimatePage>
+        {/* {!user ? ( */}
         <div className={container}>
           {/* Login image */}
           <div className="flex max-w-[250px] lg:max-w-[350px]">
@@ -92,13 +95,9 @@ const Login = () => {
                 <img
                   src="/images/logo.png"
                   alt="Instagram"
-                  className="mt-2 w-6/12 mb-4"
+                  className="w-6/12 mt-2 mb-4"
                 />
               </h1>
-
-              {error && (
-                <p className="mb-4 text-xs text-red-primary">{error}</p>
-              )}
 
               <form onSubmit={handleLogin} method="POST">
                 <input
@@ -138,7 +137,8 @@ const Login = () => {
             </footer>
           </div>
         </div>
-      ) : null}
+        {/* ) : null} */}
+      </AnimatePage>
     </>
   );
 };

@@ -9,8 +9,10 @@ import {
 import { useEffect, useState } from "react";
 import { db } from "../lib/firebase";
 
-export const useLikes = ({ postId, userId, likes }) => {
+export const useLikesAndCommetns = ({ postId, userId, likes, comments }) => {
   const [realtimeLikes, setRealtimeLikes] = useState(likes);
+  const [realtimeComments, setRealtimeComments] = useState(comments);
+
   const [liking, setLiking] = useState(false);
   const [exists, setExists] = useState(true);
 
@@ -21,12 +23,13 @@ export const useLikes = ({ postId, userId, likes }) => {
         return;
       }
       setRealtimeLikes(newPost.data().likes);
+      setRealtimeComments(newPost.data().comments);
     });
 
     return () => un();
-  }, []);
+  }, [postId]);
 
-  const handleToggleLiked = async () => {
+  const handleToggleLike = async () => {
     if (!userId) return;
 
     setLiking(true);
@@ -43,5 +46,5 @@ export const useLikes = ({ postId, userId, likes }) => {
     setLiking(false);
   };
 
-  return { handleToggleLiked, liking, realtimeLikes, exists };
+  return { handleToggleLike, liking, realtimeLikes, realtimeComments, exists };
 };

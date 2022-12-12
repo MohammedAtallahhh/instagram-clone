@@ -9,16 +9,15 @@ import Header from "./Header";
 import AddComment from "./AddComment";
 
 import { GlobalContext } from "../../context/globalContext";
-import { useLikes } from "../../hooks/useLikes";
+import { useLikesAndCommetns } from "../../hooks/useLikesAndComments";
 import { db } from "../../lib/firebase";
 import Link from "next/link";
+import Image from "next/image";
 
 const Post = ({ data }) => {
   const { id, imageSrc, caption, likes, comments, dateCreated, user_id } = data;
 
   const [userData, setUserData] = useState(null);
-  const [realtimeComments, setRealtimeComments] = useState(comments);
-  const [exists, setExists] = useState(true);
 
   const {
     state: { user },
@@ -26,18 +25,6 @@ const Post = ({ data }) => {
 
   const commentInput = useRef(null);
   const handleFocus = () => commentInput.current.focus();
-
-  useEffect(() => {
-    const un = onSnapshot(doc(db, "posts", id), (newPost) => {
-      if (!newPost.exists()) {
-        setExists(false);
-        return;
-      }
-      setRealtimeComments(newPost.data().comments);
-    });
-
-    return () => un();
-  }, []);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -52,16 +39,18 @@ const Post = ({ data }) => {
     };
 
     getUserData();
-  }, []);
+  }, [likes, user_id, user?.id]);
 
-  const { realtimeLikes, liking, handleToggleLiked } = useLikes({
-    likes,
-    postId: id,
-    userId: user?.id,
-  });
+  const { realtimeLikes, realtimeComments, liking, handleToggleLike, exists } =
+    useLikesAndCommetns({
+      likes,
+      comments,
+      postId: id,
+      userId: user?.id,
+    });
 
   return exists ? (
-    <div className="rounded mb-12 border border-gray-primary bg-white shadow-md">
+    <div className="mb-12 bg-white border rounded shadow-md border-gray-primary">
       <Header
         fullName={userData?.fullName}
         postId={id}
@@ -71,23 +60,23 @@ const Post = ({ data }) => {
       />
 
       <div
-        onDoubleClick={() => handleToggleLiked(user.id)}
-        className="relative flex justify-center items-center min-h-[200px] mb-2"
+        onDoubleClick={handleToggleLike}
+        className="relative flex justify-center items-center max-h-[500px] overflow-hidden mb-2"
       >
-        {/* <Image
+        <Image
           src={imageSrc}
           alt={caption}
-          className="mb-3 border-b border-gray-primary"
-          layout="fill"
-          objectFit="contain"
+          fill
           loading="lazy"
-        /> */}
-        <img
-          src={imageSrc}
-          alt={caption}
-          className={`border-b border-gray-primary`}
+          className="mb-3 border-b border-gray-primary !relative"
           style={{ animation: "fade 0.3s ease-in" }}
         />
+        {/* <img
+          src={imageSrc}
+          alt={caption}
+          className={`border-b border-gray-primary object-cover`}
+          style={{ animation: "fade 0.3s ease-in" }}
+        /> */}
       </div>
 
       <div className="px-3 text-sm">
@@ -96,7 +85,7 @@ const Post = ({ data }) => {
           likes={realtimeLikes.length}
           liking={liking}
           liked={realtimeLikes.includes(user?.id)}
-          handleToggleLiked={handleToggleLiked}
+          handleToggleLike={handleToggleLike}
           userId={user?.id}
         />
         <div

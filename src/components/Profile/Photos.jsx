@@ -5,12 +5,13 @@ import Skeleton from "react-loading-skeleton";
 
 import { BsFillHeartFill } from "react-icons/bs";
 import { FaCommentDots } from "react-icons/fa";
-import Link from "next/link";
+import Image from "next/image";
 
 const Photos = ({ posts }) => {
+  console.log({ posts });
   return (
     <div>
-      <div className="grid justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12 pb-20">
+      <div className="grid grid-cols-1 gap-8 pb-20 mt-12 justify-items-center sm:grid-cols-2 md:grid-cols-3">
         {!posts
           ? Array(6)
               .fill(0)
@@ -19,6 +20,7 @@ const Photos = ({ posts }) => {
                   key={i}
                   containerClassName="max-container"
                   height={200}
+                  width={200}
                 />
               ))
           : posts.length
@@ -26,17 +28,22 @@ const Photos = ({ posts }) => {
               // <Link key={photo.id} href={`/post/${photo.id}`}>
               <div
                 key={photo.id}
-                className="relative flex justify-center items-center w-full max-w-[320px] group"
+                className="relative flex justify-center items-center w-full max-w-[240px] group"
               >
-                <img src={photo.imageSrc} alt={photo.caption} />
+                <Image
+                  src={photo.imageSrc}
+                  fill
+                  className="!relative"
+                  alt={photo.caption}
+                />
 
-                <div className="absolute inset-0 z-10 w-full flex justify-evenly items-center bg-black-faded invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all">
-                  <p className="flex items-center gap-1 text-white font-bold">
+                <div className="absolute inset-0 z-10 flex items-center invisible w-full transition-all opacity-0 justify-evenly bg-black-faded group-hover:visible group-hover:opacity-100">
+                  <p className="flex items-center gap-1 font-bold text-white">
                     <BsFillHeartFill size={24} color="#ed4956" />
                     {photo.likes.length}
                   </p>
 
-                  <p className="flex items-center gap-1 text-white font-bold">
+                  <p className="flex items-center gap-1 font-bold text-white">
                     <FaCommentDots size={24} color="#eee" />
                     {photo.comments.length}
                   </p>
@@ -49,7 +56,7 @@ const Photos = ({ posts }) => {
 
       {!posts ||
         (posts.length === 0 && (
-          <p className="text-center text-2xl">No Posts Yet</p>
+          <p className="text-2xl text-center">No Posts Yet</p>
         ))}
     </div>
   );

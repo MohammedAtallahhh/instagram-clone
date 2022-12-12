@@ -2,7 +2,7 @@ import { Suspense, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-import { Sidebar } from "../components";
+import { Sidebar, AnimatePage } from "../components";
 
 import { GlobalContext } from "../context/globalContext";
 import Skeleton from "react-loading-skeleton";
@@ -45,19 +45,26 @@ export default function Home({ posts }) {
       <Head>
         <title>Instagram</title>
       </Head>
-      <div className="w-[90%] lg:w-[60%] max-w-[800px] mx-auto flex justify-center gap-12">
-        <Suspense fallback={<Skeleton count={3} width={300} height={400} />}>
-          <Timeline posts={posts} />
-        </Suspense>
 
-        {user === undefined || isMobile ? null : user && !isMobile ? (
-          <div className="hidden lg:block w-[40%]">
-            <Sidebar />
+      {user ? (
+        <AnimatePage>
+          <div className="w-[90%] lg:w-[60%] max-w-[800px] mx-auto flex justify-center gap-12">
+            <Suspense
+              fallback={<Skeleton count={3} width={300} height={400} />}
+            >
+              <Timeline posts={posts} />
+            </Suspense>
+
+            {user === undefined || isMobile ? null : user && !isMobile ? (
+              <div className="hidden lg:block w-[40%]">
+                <Sidebar />
+              </div>
+            ) : (
+              <Skeleton width={300} height={300} />
+            )}
           </div>
-        ) : (
-          <Skeleton width={300} height={300} />
-        )}
-      </div>
+        </AnimatePage>
+      ) : null}
     </>
   );
 }

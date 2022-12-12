@@ -11,7 +11,7 @@ import {
   query,
 } from "firebase/firestore";
 
-import { ProfileHeader, ProfilePhotos } from "../../components";
+import { AnimatePage, ProfileHeader, ProfilePhotos } from "../../components";
 
 import { db } from "../../lib/firebase";
 import { getPostsByUserId } from "../../herlpers/firebase";
@@ -47,17 +47,19 @@ const UserPage = ({ userData }) => {
       router.push("/404");
     }
   }, [router, userData]);
-  return user ? (
+  return (
     <>
       <Head>
-        <title>{user.fullName}</title>
+        <title>{user?.fullName}</title>
       </Head>
-      <div className="w-[90%] max-w-[800px] mx-auto">
-        <ProfileHeader user={user} posts={posts} />
-        <ProfilePhotos posts={posts} />
-      </div>
+      <AnimatePage>
+        <div className="w-[90%] max-w-[800px] mx-auto">
+          <ProfileHeader user={user} posts={posts} />
+          <ProfilePhotos posts={posts} />
+        </div>
+      </AnimatePage>
     </>
-  ) : null;
+  );
 };
 
 export const getServerSideProps = async ({ query: { id } }) => {
@@ -66,9 +68,9 @@ export const getServerSideProps = async ({ query: { id } }) => {
 
   const q = query(collection(db, "users"));
 
-  const postsRes = await getDocs(q);
+  const usersRes = await getDocs(q);
 
-  const ids = postsRes.docs.map((d) => d.id);
+  const ids = usersRes.docs.map((d) => d.id);
 
   const isValidId = ids.find((existedId) => existedId === id);
 

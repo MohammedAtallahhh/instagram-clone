@@ -12,7 +12,7 @@ const Actions = ({
   likes,
   liked,
   liking,
-  handleToggleLiked,
+  handleToggleLike,
 }) => {
   const {
     state: { user },
@@ -24,7 +24,7 @@ const Actions = ({
         <div className="flex items-center gap-4 py-2">
           <button
             name="like post"
-            onClick={() => handleToggleLiked(userId)}
+            onClick={handleToggleLike}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 handleToggleLiked(userId);

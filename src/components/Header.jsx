@@ -33,9 +33,9 @@ const Header = () => {
   const router = useRouter();
 
   const handleSignOut = async () => {
+    router.push("/login");
     await signOut(auth);
     await dispatch({ type: actions.LOGOUT });
-    router.push("/login");
   };
 
   const { header, contianer, logo, navActions, loginButton, signUpButton } =
@@ -49,7 +49,7 @@ const Header = () => {
             <img
               src="/images/logo.png"
               alt="Instagram"
-              className="mt-2 w-6/12"
+              className="w-6/12 mt-2"
             />
           </Link>
         </div>
@@ -69,10 +69,10 @@ const Header = () => {
 
               {/* User icon */}
               <div className="flex items-center cursor-pointer w-11 h-11">
-                <Link href={`/p/${user?.id}`} className="h-full w-full">
+                <Link href={`/p/${user?.id}`} className="w-full h-full">
                   {" "}
                   <img
-                    className="rounded-full w-full h-full border border-gray-light object-cover"
+                    className="object-cover w-full h-full border rounded-full border-gray-light"
                     src={user?.profilePicture ?? DEFAULT_IMAGE_PATH}
                     alt={`${user?.username} profile`}
                   />
@@ -84,7 +84,7 @@ const Header = () => {
                 type="button"
                 name="sign-out"
                 title="Sign Out"
-                className="bg-red-primary text-white p-2 rounded-full"
+                className="p-2 text-white rounded-full bg-red-primary"
                 onClick={handleSignOut}
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {

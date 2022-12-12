@@ -12,6 +12,7 @@ import Link from "next/link";
 import { usernameExists } from "../herlpers/firebase";
 import { GlobalContext } from "../context/globalContext";
 import { actions } from "../context/actions";
+import { toast } from "react-hot-toast";
 
 const classes = {
   container:
@@ -35,7 +36,6 @@ const SignUp = () => {
   const [fullName, setFullName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const { state, dispatch } = useContext(GlobalContext);
 
@@ -83,7 +83,7 @@ const SignUp = () => {
         setFullName("");
         setEmailAddress("");
         setPassword("");
-        setError(error.message);
+        toast.error(error.message);
       }
     } else {
       setUsername("");
@@ -111,11 +111,9 @@ const SignUp = () => {
               <img
                 src="/images/logo.png"
                 alt="Instagram"
-                className="mt-2 w-6/12 mb-4"
+                className="w-6/12 mt-2 mb-4"
               />
             </h1>
-
-            {error && <p className="mb-4 text-xs text-red-primary">{error}</p>}
 
             <form onSubmit={handleSignUp} method="POST">
               <input
