@@ -30,10 +30,7 @@ const Header = () => {
   const { state, dispatch } = useContext(GlobalContext);
   const { user } = state;
 
-  const router = useRouter();
-
   const handleSignOut = async () => {
-    router.push("/login");
     await signOut(auth);
     await dispatch({ type: actions.LOGOUT });
   };

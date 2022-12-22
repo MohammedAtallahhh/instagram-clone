@@ -69,7 +69,7 @@ export default function Home({ posts }) {
   );
 }
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async () => {
   const postsQuery = query(collection(db, "posts"));
   const res = await getDocs(postsQuery);
 

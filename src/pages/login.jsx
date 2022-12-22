@@ -49,12 +49,9 @@ const Login = () => {
         emailAddress,
         password
       );
-
-      console.log({ user });
       const userData = await getUserByAuthId(user.uid);
 
       dispatch({ type: actions.LOGIN, payload: userData });
-      router.push("/");
       //
     } catch (error) {
       setEmailAddress("");
