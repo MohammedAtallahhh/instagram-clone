@@ -24,13 +24,13 @@ const UserPage = ({ userData }) => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const postsData = await getPostsByUserId(user.id);
+      const postsData = await getPostsByUserId(user.uid);
 
       setPosts(postsData);
     };
 
     fetchPosts();
-  }, [user.id]);
+  }, [user.uid]);
 
   useEffect(() => {
     if (userData) {

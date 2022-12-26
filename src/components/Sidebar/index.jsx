@@ -24,7 +24,7 @@ const Sidebar = () => {
     const fetchUsers = async () => {
       const q = query(
         collection(db, "users"),
-        where(documentId(), "not-in", [...user.following, user.id])
+        where("uid", "not-in", [...user.following, user.id])
       );
 
       const userDocs = await getDocs(q);
@@ -34,7 +34,9 @@ const Sidebar = () => {
       setProfiles(users);
     };
 
-    fetchUsers();
+    if (user?.id) {
+      fetchUsers();
+    }
   }, [user]);
 
   return (
@@ -42,7 +44,7 @@ const Sidebar = () => {
       <CurrentUser />
       {profiles.length ? (
         <div>
-          <h2 className="font-medium mb-3">Suggested users</h2>
+          <h2 className="mb-3 font-medium">Suggested users</h2>
 
           <ul className="max-w-[250px]">
             {profiles.map((profile) => (

@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 import { auth, db } from "../lib/firebase";
 import Head from "next/head";
@@ -59,9 +59,8 @@ const SignUp = () => {
           password
         );
 
-        const usersRef = collection(db, "users");
+        const userRef = doc(db, "users", createdUser.user.uid);
         const newUser = {
-          auth_id: createdUser.user.uid,
           username: username.toLowerCase(),
           fullName,
           emailAddress: emailAddress.toLowerCase(),
@@ -70,13 +69,15 @@ const SignUp = () => {
           dateCreated: Date.now(),
         };
 
-        const res = await addDoc(usersRef, newUser);
+        await setDoc(userRef, {
+          ...newUser,
+          uid: createdUser.user.uid,
+        });
 
         await dispatch({
           type: actions.LOGIN,
-          payload: { ...newUser, id: res.id },
+          payload: { ...newUser, uid: createdUser.user.uid },
         });
-        router.push("/");
 
         // Error Signing up
       } catch (error) {
@@ -87,7 +88,7 @@ const SignUp = () => {
       }
     } else {
       setUsername("");
-      setError("That username is already taken, please try another.");
+      toast.error("That username is already taken, please try another.");
     }
   };
 

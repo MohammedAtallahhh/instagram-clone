@@ -4,7 +4,7 @@ import { globalReducer } from "./globalReducer";
 
 import { auth, db } from "../lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { getUserByAuthId } from "../herlpers/firebase";
+import { getUserById } from "../herlpers/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
 export const GlobalContext = createContext();
@@ -20,7 +20,7 @@ export const GlobalProvider = ({ children }) => {
     const un = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const id = user.uid;
-        const userData = await getUserByAuthId(id);
+        const userData = await getUserById(id);
 
         dispatch({ type: actions.LOGIN, payload: userData });
 

@@ -10,7 +10,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { GlobalContext } from "../context/globalContext";
 import { actions } from "../context/actions";
-import { getUserByAuthId } from "../herlpers/firebase";
+import { getUserById } from "../herlpers/firebase";
 import Skeleton from "react-loading-skeleton";
 import { toast } from "react-hot-toast";
 import { AnimatePage } from "../components";
@@ -49,7 +49,10 @@ const Login = () => {
         emailAddress,
         password
       );
-      const userData = await getUserByAuthId(user.uid);
+
+      console.log({ user });
+      const userData = await getUserById(user.uid);
+      console.log({ userData });
 
       dispatch({ type: actions.LOGIN, payload: userData });
       //

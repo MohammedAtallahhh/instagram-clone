@@ -68,15 +68,9 @@ const Post = ({ data }) => {
           alt={caption}
           fill
           loading="lazy"
-          className="mb-3 border-b border-gray-primary !relative"
+          className="mb-3 min-h-[300px] border-b border-gray-primary !relative"
           style={{ animation: "fade 0.3s ease-in" }}
         />
-        {/* <img
-          src={imageSrc}
-          alt={caption}
-          className={`border-b border-gray-primary object-cover`}
-          style={{ animation: "fade 0.3s ease-in" }}
-        /> */}
       </div>
 
       <div className="px-3 text-sm">

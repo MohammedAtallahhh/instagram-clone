@@ -21,16 +21,13 @@ export const usernameExists = async (username) => {
   return !snap.empty;
 };
 
-export const getUserByAuthId = async (id) => {
+export const getUserById = async (id) => {
   if (!id) return;
 
-  const q = query(collection(db, "users"), where("auth_id", "==", id));
+  const ref = doc(db, "users", id);
+  const res = await getDoc(ref);
 
-  const result = await getDocs(q);
-
-  const user = result.docs[0].data();
-
-  return { id: result.docs[0].id, ...user };
+  return { id: res.id, ...res.data() };
 };
 
 export const getPostsByUserId = async (id) => {
@@ -40,7 +37,7 @@ export const getPostsByUserId = async (id) => {
 
   const posts = postsDocs.docs.map((p) => ({ ...p.data(), id: p.id }));
 
-  return posts;
+  return posts || [];
 };
 
 export const followUser = async (currentUserId, followedUserId) => {

@@ -76,25 +76,25 @@ const Comments = ({ id, comments, dateCreated }) => {
           {commentsData
             ?.slice(0, commentsSlice)
             .map(({ id, content, userData, dateCreated }, i) => (
-              <div key={i + userData.auth_id} className="mb-4 flex gap-3">
+              <div key={i + userData.id} className="flex gap-3 mb-4">
                 {/* Comment */}
-                <div className="w-8 h-8 flex-shrink-0">
+                <div className="flex-shrink-0 w-8 h-8">
                   <img
                     src={userData.profilePicture ?? DEFAULT_IMAGE_PATH}
                     alt={userData.fullName}
-                    className="w-full h-full rounded-full object-cover"
+                    className="object-cover w-full h-full rounded-full"
                   />
                 </div>
 
                 <div>
                   <div>
                     <Link href={`/p/${userData.id}`} className="flex-shrink-0">
-                      <h4 className="text-gray-text font-semibold mr-2 inline">
+                      <h4 className="inline mr-2 font-semibold text-gray-text">
                         {userData.fullName}
                       </h4>
                     </Link>
 
-                    <p className="text-gray-text flex-shrink inline">
+                    <p className="flex-shrink inline text-gray-text">
                       {content}
                     </p>
                   </div>
@@ -122,7 +122,7 @@ const Comments = ({ id, comments, dateCreated }) => {
           {/* button for showing and hiding comments */}
           {commentsData?.length > 3 ? (
             <button
-              className="text-sm text-gray-base mt-3 focus:outline-none"
+              className="mt-3 text-sm text-gray-base focus:outline-none"
               type="button"
               onClick={
                 showNext ? showNextComments : hide ? hideComments : undefined

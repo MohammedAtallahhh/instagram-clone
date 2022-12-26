@@ -111,7 +111,7 @@ const Picture = ({ id, currentUserId, fullName, profilePicture }) => {
                   id="profilePicture"
                   className="hidden"
                   onChange={(e) => setFile(e.target.files[0])}
-                  accept="image/png, image/gif, image/jpeg"
+                  accept="image/png, image/gif, image/jpeg, image/avif"
                 />
               </>
             ) : null}

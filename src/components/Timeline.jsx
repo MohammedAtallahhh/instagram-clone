@@ -11,8 +11,6 @@ const Timeline = ({ posts }) => {
     state: { user },
   } = useContext(GlobalContext);
 
-  const following = user?.following;
-
   return (
     <div className="w-[100%] lg:w-[60%] max-w-[500px] mx-auto flex justify-center">
       {!posts ? (
@@ -22,7 +20,7 @@ const Timeline = ({ posts }) => {
           width={350}
           className="mb-5 text-red-primary"
         />
-      ) : following?.length === 0 ? (
+      ) : posts?.length === 0 ? (
         <p className="flex justify-center font-bold">
           Follow other people to see Photos
         </p>
